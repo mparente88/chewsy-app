@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.db.models import Q
 from django.forms import modelformset_factory
 from django.forms.models import inlineformset_factory
@@ -119,23 +120,39 @@ class RecipeDetailView(LoginRequiredMixin, DetailView):
     template_name = 'recipes/recipe_detail.html'
     context_object_name = 'recipe'
 
+from django.db import transaction
+
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     form_class = RecipeForm
     template_name = 'recipes/recipe_form.html'
     success_url = reverse_lazy('recipe_list')
 
-    def form_valid (self, form):
-        form.instance.user = self.request.user
-        response = super().form_valid(form)
-        Direction.objects.create(recipe=self.object, step_number=1, description="Example direction")
-        return response
-    
-    def form_invalid(self, form):
-        messages.error(self.request, "Failed to add recipe. Please fix errors.")
-        return super().form_invalid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['direction_formset'] = DirectionFormSet(self.request.POST)
+        else:
+            context['direction_formset'] = DirectionFormSet()
+        return context
 
-class RecipeUpdateView(LoginRequiredMixin, UpdateView):
+    def form_valid(self, form):
+        context = self.get_context_data()
+        direction_formset = context['direction_formset']
+        form.instance.user = self.request.user
+
+        if direction_formset.is_valid():
+            response = super().form_valid(form)
+            directions = direction_formset.save(commit=False)
+            for direction in directions:
+                direction.recipe = self.object
+                direction.save()
+            return response
+        else:
+            return self.form_invalid(form)
+
+
+class RecipeUpdateView(UpdateView):
     model = Recipe
     form_class = RecipeForm
     template_name = 'recipes/recipe_form.html'
@@ -151,13 +168,19 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         context = self.get_context_data()
         direction_formset = context['direction_formset']
-        if direction_formset.is_valid():
+        with transaction.atomic():
             self.object = form.save()
-            direction_formset.instance = self.object
-            direction_formset.save()
-            return redirect('recipe_list')
-        else:
-            return self.form_invalid(form)
+            if direction_formset.is_valid():
+                directions = direction_formset.save(commit=False)
+                for direction in directions:
+                    direction.recipe = self.object
+                    direction.save()
+                direction_formset.save_m2m()
+            else:
+                return self.form_invalid(form)
+        return super().form_valid(form)
+
+
 
 class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipe

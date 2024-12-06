@@ -280,3 +280,143 @@ footer {
   border-radius: 5px;
   background-color: #f9f9f9;
 }
+
+.direction-form {
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.step-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  background-color: #e76f51;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+button:hover {
+  background-color: #d14d2d;
+}
+
+.move-up-button,
+.move-down-button {
+  background-color: #2a9d8f;
+}
+
+.move-up-button:hover,
+.move-down-button:hover {
+  background-color: #21867a;
+}
+
+.remove-direction-button {
+  background-color: #e63946;
+}
+
+.remove-direction-button:hover {
+  background-color: #c22836;
+}
+
+.directions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.direction-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.step-number {
+  font-weight: bold;
+  color: #2a9d8f;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.direction-description {
+  font-size: 1rem;
+  color: #333;
+}
+
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.actions .btn-edit,
+.actions .btn-delete {
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.actions .btn-edit {
+  background-color: #2a9d8f;
+  color: white;
+}
+
+.actions .btn-edit:hover {
+  background-color: #21867a;
+}
+
+.actions .btn-delete {
+  background-color: #e63946;
+  color: white;
+}
+
+.actions .btn-delete:hover {
+  background-color: #c22836;
+}
+
+#sortable-directions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.direction-item {
+  background: #f9f9f9;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: grab;
+}
+
+.direction-item:hover {
+  background: #f0f0f0;
+}
+
+.remove-direction-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.remove-direction-button:hover {
+  background: #c82333;
+}

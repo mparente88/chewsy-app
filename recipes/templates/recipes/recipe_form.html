@@ -5,14 +5,20 @@
 
   <h3>Directions</h3>
   <div id="direction-forms">
-    {{ direction_formset.management_form }} {% for form in direction_formset %}
-    <div class="direction-form">
-      {{ form.as_p }}
-      <button type="button" class="remove-direction-button">Remove</button>
-    </div>
-    {% endfor %}
+    {{ direction_formset.management_form }}
+    <ul id="sortable-directions">
+      {% for form in direction_formset %}
+      <li class="direction-item" data-step="{{ forloop.counter }}">
+        <div class="direction-form">
+          <span class="step-label">Step {{ forloop.counter }}</span>
+          {{ form.description }}
+          <input type="hidden" name="directions-{{ forloop.counter0 }}-step_number" value="{{ forloop.counter }}" />
+          <button type="button" class="remove-direction-button">Remove</button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
-
   <button type="button" id="add-direction-button">Add Step</button>
   <button type="submit">Save Recipe</button>
 </form>

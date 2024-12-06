@@ -45,7 +45,6 @@ class RecipeSearchForm(forms.Form):
         widget=forms.CheckboxSelectMultiple
     )
 
-
 class RecipeForm(forms.ModelForm):
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
@@ -62,31 +61,10 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         fields = ['title', 'description', 'ingredients', 'category', 'tags']
 
-        def clean_title(self):
-            title = self.cleaned_data.get('title')
-            if len(title) > 200:
-                raise forms.ValidationError("Title must be under 200 characters.")
-            return title
-        
-        def clean_ingredients(self):
-            ingredients = self.cleaned_data.get('ingredients')
-            if not ingredients.strip():
-                raise forms.ValidationError("Ingredients cannot be empty.")
-            return ingredients
-
-        def clean_instructions(self):
-            instructions = self.cleaned_data.get('instructions')
-            if not instructions.strip():
-                raise forms.ValidationError("Instructions cannot be empty.")
-            return instructions
-        
 class DirectionForm(forms.ModelForm):
     class Meta:
         model = Direction
         fields = ['step_number', 'description']
-        widgets = {
-            'step': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter step'}),
-        }
 
 DirectionFormSet = inlineformset_factory(
     parent_model=Recipe,
