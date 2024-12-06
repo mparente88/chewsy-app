@@ -243,3 +243,16 @@ footer {
     overflow: visible;
   }
 }
+
+.nav-logo {
+  height: 50px;
+  width: auto;
+  vertical-align: middle;
+}
+
+.hero-logo {
+  display: block;
+  max-width: 200px;
+  height: auto;
+  margin: 0 auto 1rem;
+}

@@ -1,5 +1,6 @@
 {% extends 'recipes/base.html' %} {% load static %} {% block content %}
 <section class="hero">
+  <img src="{% static 'images/ChewsyLogo.png' %}" alt="Chewsy Logo" class="hero-logo" />
   <h2>Welcome to Chewsy!</h2>
   <p>Beggars Can't Be Chewsers</p>
   <a href="{% url 'recipe_list' %}" class="btn-primary">View Recipes</a>
