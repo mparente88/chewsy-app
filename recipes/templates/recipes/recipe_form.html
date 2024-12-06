@@ -1,7 +1,16 @@
 {% extends 'recipes/base.html' %} {% block title %}Add/Edit Recipe{% endblock %} {% block content %}
-<h2>{% if recipe %}Edit{% else %}Add{% endif %} Recipe</h2>
+<h2>{% if object %}Edit{% else %}Add{% endif %} Recipe</h2>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit">{% if recipe %}Save Changes{% else %}Add Recipe{% endif %}</button>
+
+  <h3>Directions</h3>
+  <div id="direction-forms">
+    {{ direction_formset.management_form }} {% for form in direction_formset %}
+    <div class="direction-form">{{ form.as_p }}</div>
+    {% endfor %}
+  </div>
+
+  <button type="submit">Save Recipe</button>
 </form>
+
 {% endblock %}

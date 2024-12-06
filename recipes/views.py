@@ -1,17 +1,19 @@
 from django.contrib.auth import login, logout
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.forms import modelformset_factory
+from django.forms.models import inlineformset_factory
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-from .models import Recipe, Category, Tag
-from .forms import RecipeForm, RecipeSearchForm
+from .models import Recipe, Category, Tag, Direction
+from .forms import RecipeForm, RecipeSearchForm, DirectionFormSet
 
 class HomeView(TemplateView):
     template_name = 'recipes/home.html'
@@ -125,8 +127,9 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid (self, form):
         form.instance.user = self.request.user
-        messages.success(self.request, "Recipe successfully added!")
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        Direction.objects.create(recipe=self.object, step_number=1, description="Example direction")
+        return response
     
     def form_invalid(self, form):
         messages.error(self.request, "Failed to add recipe. Please fix errors.")
@@ -136,17 +139,25 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = Recipe
     form_class = RecipeForm
     template_name = 'recipes/recipe_form.html'
-    success_url = reverse_lazy('recipe_list')
 
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        if obj.user != self.request.user and not self.request.user.is_superuser:
-            raise PermissionDenied("This recipe can only be edited by its owner.")
-        return obj
-    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['direction_formset'] = DirectionFormSet(self.request.POST, instance=self.object)
+        else:
+            context['direction_formset'] = DirectionFormSet(instance=self.object)
+        return context
+
     def form_valid(self, form):
-        messages.success(self.request, "Recipe successfully updated!")
-        return super().form_valid(form)
+        context = self.get_context_data()
+        direction_formset = context['direction_formset']
+        if direction_formset.is_valid():
+            self.object = form.save()
+            direction_formset.instance = self.object
+            direction_formset.save()
+            return redirect('recipe_list')
+        else:
+            return self.form_invalid(form)
 
 class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipe

@@ -1,18 +1,14 @@
-{% extends 'recipes/base.html' %} {% block title %}{{ recipe.title }}
-
-<!-- Comment for spacing -->
-
-{% endblock%} {% block content %}
+{% extends 'recipes/base.html' %} {% block title %}{{ recipe.title }}{% endblock %} {% block content %}
 <h2>{{ recipe.title }}</h2>
-<p><strong>Created By:</strong> {{ recipe.user.username }}</p>
 <p><strong>Description:</strong> {{ recipe.description }}</p>
 <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
-<p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
-<p><strong>Category:</strong> {{ recipe.category.name|default:"No Category" }}</p>
-<p>
-  <strong>Tags:</strong>
-  {% for tag in recipe.tags.all %} {{ tag.name }}{% if not forloop.last %}, {% endif %} {% empty %} None {% endfor %}
-</p>
+
+<h3>Directions:</h3>
+<ol>
+  {% for direction in recipe.directions.all %}
+  <li>{{ direction.description }}</li>
+  {% endfor %}
+</ol>
 
 {% if recipe.user == request.user or user.is_staff %}
 <a href="{% url 'recipe_update' recipe.pk %}">Edit</a>

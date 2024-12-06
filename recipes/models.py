@@ -1,5 +1,30 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+
+class Recipe(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    ingredients = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
+    tags = models.ManyToManyField('Tag', blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Direction(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="directions")
+    step_number = models.PositiveIntegerField()
+    description = models.TextField()
+
+    class Meta:
+        ordering = ['step_number']
+
+    def __str__(self):
+        return f"{self.recipe.title} - Step {self.step_number}"
+
 
 class Category(models.Model):
     name = models.CharField(max_length=120, unique=True)
@@ -7,31 +32,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    CATEGORY_CHOICES = [
-        ('dietary', 'Dietary'),
-        ('season', 'Season'),
-        ('time', 'Time'),
-        ('cuisine', 'Cuisine'),
-        ('flavor', 'Flavor'),
-        ('misc', 'Misc'),
-    ]
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return self.name
-
-class Recipe(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    ingredients = models.TextField()
-    instructions = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True)
-
-    def __str__(self):
-        return self.title

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Recipe, Category, Tag
+from django.forms.models import inlineformset_factory
+from .models import Recipe, Category, Tag, Direction
 
 class RecipeSearchForm(forms.Form):
     category = forms.ModelChoiceField(
@@ -59,7 +60,7 @@ class RecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        fields = ['title', 'description', 'ingredients', 'instructions', 'category', 'tags']
+        fields = ['title', 'description', 'ingredients', 'category', 'tags']
 
         def clean_title(self):
             title = self.cleaned_data.get('title')
@@ -79,3 +80,18 @@ class RecipeForm(forms.ModelForm):
                 raise forms.ValidationError("Instructions cannot be empty.")
             return instructions
         
+class DirectionForm(forms.ModelForm):
+    class Meta:
+        model = Direction
+        fields = ['step_number', 'description']
+        widgets = {
+            'step': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter step'}),
+        }
+
+DirectionFormSet = inlineformset_factory(
+    parent_model=Recipe,
+    model=Direction,
+    form=DirectionForm,
+    extra=1,
+    can_delete=True
+)
