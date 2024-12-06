@@ -80,7 +80,7 @@ footer {
 
 .features {
   padding: 1rem 2rem;
-  background-color: #fff;
+  background-color: white;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 800px;
@@ -173,7 +173,7 @@ footer {
 .pagination a {
   margin: 0 5px;
   text-decoration: none;
-  color: #007bff;
+  color: #e76f51;
 }
 
 .pagination .current {
@@ -234,84 +234,6 @@ footer {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
-}
-
-.filter-dropdown-content select {
-  width: 100%;
-  padding: 0.25rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.filter-dropdown-content input[type="checkbox"] {
-  margin-right: 0.5rem;
-}
-
-.filter-dropdown-content button[type="submit"] {
-  background: #28a745;
-  color: #fff;
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.filter-dropdown-content button[type="submit"]:hover {
-  background: #218838;
-}
-
-.filter-dropdown-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.filter-dropdown-content::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.filter-dropdown-content::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
-}
-
-.tag-group-wrapper {
-  position: relative;
-  margin: 1rem 0;
-}
-
-.tag-toggle {
-  display: none;
-}
-
-.tag-button {
-  background: #555;
-  color: #fff;
-  padding: 0.3rem 0.6rem;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 0.9rem;
-  display: inline-block;
-  margin-bottom: 0.5rem;
-}
-
-.tag-button:hover {
-  background: #333;
-}
-
-.tag-dropdown-content {
-  display: none;
-  position: relative;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0.5rem;
-  max-height: 150px;
-  overflow-y: auto;
-}
-
-.tag-toggle:checked + .tag-button + .tag-dropdown-content {
-  display: block;
 }
 
 @media (min-width: 768px) {
