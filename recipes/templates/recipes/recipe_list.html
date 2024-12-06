@@ -1,0 +1,56 @@
+{% extends 'recipes/base.html' %} {% block title %}All Recipes{% endblock %} {% block content %}
+<h2>All Recipes</h2>
+
+<div class="filter-dropdown-wrapper">
+  <input type="checkbox" id="filter-toggle" class="filter-toggle" />
+  <label for="filter-toggle" class="filter-button">Filter</label>
+
+  <div class="filter-dropdown-content">
+    <form method="get" action="">
+      <div class="filter-section">
+        <label for="id_category"><strong>Category:</strong></label>
+        {{ form.category }}
+      </div>
+
+      <div class="filter-section">
+        <label><strong>Tags:</strong></label>
+        {{ form.tags }}
+      </div>
+
+      <button type="submit">Apply</button>
+    </form>
+  </div>
+</div>
+
+{% if page_obj.object_list %}
+<div class="recipe-container">
+  {% for recipe in page_obj.object_list %}
+  <div class="recipe-box">
+    <a href="{% url 'recipe_detail' recipe.pk %}" class="recipe-link">
+      <h3>{{ recipe.title }}</h3>
+      <p><strong>Created:</strong> {{ recipe.created_at|date:"F j, Y" }}</p>
+      <p><strong>By:</strong> {{ recipe.user.username }}</p>
+      <p><strong>Description:</strong> {{ recipe.description|truncatewords:20 }}</p>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+    <a href="?page=1">&laquo; First</a>
+    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <span class="current"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}. </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+{% else %}
+<p>No recipes available.</p>
+{% endif %} {% endblock %}

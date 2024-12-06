@@ -1,0 +1,13 @@
+{% extends 'recipes/base.html' %} {% block title %}Log In{% endblock %}
+<!-- comment for spacing -->
+{% block content %}
+
+<h2>Log In</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }} {% if request.GET.next %}
+  <input type="hidden" name="next" value="{{ request.GET.next }}" />
+  {% endif %}
+  <button type="submit">Log In</button>
+</form>
+<p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+{% endblock %}

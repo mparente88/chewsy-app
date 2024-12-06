@@ -1,0 +1,17 @@
+{% extends 'recipes/base.html' %} {% load static %} {% block content %}
+<section class="hero">
+  <h2>Welcome to Chewsy!</h2>
+  <p>Beggars Can't Be Chewsers</p>
+  <a href="{% url 'recipe_list' %}" class="btn-primary">View Recipes</a>
+  <a href="{% url 'recipe_create' %}" class="btn-secondary">Add New Recipe</a>
+</section>
+
+<section class="features">
+  <h3>Why Chewsy?</h3>
+  <ul>
+    <li><strong>Look:</strong> It's an app, ok?</li>
+    <li><strong>Just:</strong> Give me a good grade.</li>
+    <li><strong>Because:</strong> I'm trying!</li>
+  </ul>
+</section>
+{% endblock %}
