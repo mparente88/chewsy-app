@@ -209,6 +209,8 @@ footer {
   min-width: 200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 999;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .filter-toggle:checked + .filter-button + .filter-dropdown-content {
@@ -247,4 +249,111 @@ footer {
 
 .filter-dropdown-content button[type="submit"]:hover {
   background: #218838;
+}
+
+.filter-dropdown-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.filter-dropdown-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.filter-dropdown-content::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+.tag-group-wrapper {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.tag-toggle {
+  display: none;
+}
+
+.tag-button {
+  background: #555;
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.tag-button:hover {
+  background: #333;
+}
+
+.tag-dropdown-content {
+  display: none;
+  position: relative;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.tag-toggle:checked + .tag-button + .tag-dropdown-content {
+  display: block;
+}
+
+.filter-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 1rem;
+}
+
+.filter-toggle {
+  display: none;
+}
+
+.filter-button {
+  background: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.filter-button:hover {
+  background: #0056b3;
+}
+
+.filter-dropdown-content {
+  display: none;
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.filter-toggle:checked + .filter-button + .filter-dropdown-content {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .filter-dropdown-content {
+    width: 500px;
+    max-height: none;
+    overflow: visible;
+  }
 }

@@ -9,6 +9,15 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    CATEGORY_CHOICES = [
+        ('dietary', 'Dietary'),
+        ('season', 'Season'),
+        ('time', 'Time'),
+        ('cuisine', 'Cuisine'),
+        ('flavor', 'Flavor'),
+        ('misc', 'Misc'),
+    ]
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
 
     def __str__(self):
         return self.name

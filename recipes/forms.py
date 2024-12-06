@@ -8,11 +8,42 @@ class RecipeSearchForm(forms.Form):
         empty_label="All Categories"
     )
 
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
+    dietary_tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.filter(category='dietary'),
         required=False,
         widget=forms.CheckboxSelectMultiple
     )
+
+    season_tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.filter(category='season'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    time_tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.filter(category='time'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    cuisine_tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.filter(category='cuisine'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    flavor_tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.filter(category='flavor'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    misc_tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.filter(category='misc'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
 
 class RecipeForm(forms.ModelForm):
     category = forms.ModelChoiceField(

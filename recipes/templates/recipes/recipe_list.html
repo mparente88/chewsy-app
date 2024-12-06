@@ -12,9 +12,46 @@
         {{ form.category }}
       </div>
 
-      <div class="filter-section">
-        <label><strong>Tags:</strong></label>
-        {{ form.tags }}
+      <!-- Diet-->
+      <div class="tag-group-wrapper">
+        <input type="checkbox" id="dietary-toggle" class="tag-toggle" />
+        <label for="dietary-toggle" class="tag-button">Dietary</label>
+        <div class="tag-dropdown-content">{{ form.dietary_tags }}</div>
+      </div>
+
+      <!-- Season -->
+      <div class="tag-group-wrapper">
+        <input type="checkbox" id="season-toggle" class="tag-toggle" />
+        <label for="season-toggle" class="tag-button">Season</label>
+        <div class="tag-dropdown-content">{{ form.season_tags }}</div>
+      </div>
+
+      <!-- Time -->
+      <div class="tag-group-wrapper">
+        <input type="checkbox" id="time-toggle" class="tag-toggle" />
+        <label for="time-toggle" class="tag-button">Time</label>
+        <div class="tag-dropdown-content">{{ form.time_tags }}</div>
+      </div>
+
+      <!-- Cuisine -->
+      <div class="tag-group-wrapper">
+        <input type="checkbox" id="cuisine-toggle" class="tag-toggle" />
+        <label for="cuisine-toggle" class="tag-button">Cuisine</label>
+        <div class="tag-dropdown-content">{{ form.cuisine_tags }}</div>
+      </div>
+
+      <!-- Flavor -->
+      <div class="tag-group-wrapper">
+        <input type="checkbox" id="flavor-toggle" class="tag-toggle" />
+        <label for="flavor-toggle" class="tag-button">Flavor</label>
+        <div class="tag-dropdown-content">{{ form.flavor_tags }}</div>
+      </div>
+
+      <!-- Misc -->
+      <div class="tag-group-wrapper">
+        <input type="checkbox" id="misc-toggle" class="tag-toggle" />
+        <label for="misc-toggle" class="tag-button">Misc</label>
+        <div class="tag-dropdown-content">{{ form.misc_tags }}</div>
       </div>
 
       <button type="submit">Apply</button>

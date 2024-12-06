@@ -80,10 +80,35 @@ class RecipeListView(LoginRequiredMixin, ListView):
             if category:
                 queryset = queryset.filter(category=category)
             
-            selected_tags = form.cleaned_data.get('tags')
-            if selected_tags:
-                for tag in selected_tags:
-                    queryset = queryset.filter(tags=tag)
+            dietary_tags = form.cleaned_data.get('dietary_tags')
+            if dietary_tags:
+                for t in dietary_tags:
+                    queryset = queryset.filter(tags=t)
+            
+            season_tags = form.cleaned_data.get('season_tags')
+            if season_tags:
+                for t in season_tags:
+                    queryset = queryset.filter(tags=t)
+
+            time_tags = form.cleaned_data.get('time_tags')
+            if time_tags:
+                for t in time_tags:
+                    queryset = queryset.filter(tags=t)
+
+            cuisine_tags = form.cleaned_data.get('cuisine_tags')
+            if cuisine_tags:
+                for t in cuisine_tags:
+                    queryset = queryset.filter(tags=t)
+
+            flavor_tags = form.cleaned_data.get('flavor_tags')
+            if flavor_tags:
+                for t in flavor_tags:
+                    queryset = queryset.filter(tags=t)
+
+            misc_tags = form.cleaned_data.get('misc_tags')
+            if misc_tags:
+                for t in misc_tags:
+                    queryset = queryset.filter(tags=t)
 
         return queryset
 
