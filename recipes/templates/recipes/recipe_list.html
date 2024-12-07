@@ -63,7 +63,7 @@
 <div class="recipe-container">
   {% for recipe in page_obj.object_list %}
   <div class="recipe-box">
-    <a href="{% url 'recipe_detail' recipe.pk %}" class="recipe-link">
+    <a href="{% url 'recipes:recipe_detail' recipe.pk %}" class="recipe-link">
       <h3>{{ recipe.title }}</h3>
       <p><strong>Created:</strong> {{ recipe.created_at|date:"F j, Y" }}</p>
       <p><strong>By:</strong> {{ recipe.user.username }}</p>

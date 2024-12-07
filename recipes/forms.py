@@ -65,11 +65,15 @@ class DirectionForm(forms.ModelForm):
     class Meta:
         model = Direction
         fields = ['step_number', 'description']
+        widgets = {
+            'step_number': forms.HiddenInput(),
+        }
 
 DirectionFormSet = inlineformset_factory(
-    parent_model=Recipe,
-    model=Direction,
+    Recipe,
+    Direction,
     form=DirectionForm,
+    fields=['step_number', 'description'],
     extra=1,
     can_delete=True
 )
@@ -80,9 +84,10 @@ class IngredientForm(forms.ModelForm):
         fields = ['name', 'quantity', 'measurement', 'chef_notes']
 
 IngredientFormSet = inlineformset_factory(
-    parent_model=Recipe,
-    model=Ingredient,
+    Recipe,
+    Ingredient,
     form=IngredientForm,
+    fields=['name', 'quantity', 'measurement', 'chef_notes'],
     extra=1,
     can_delete=True
 )

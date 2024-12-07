@@ -18,7 +18,7 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=255)
     quantity = models.IntegerField()
     measurement = models.CharField(max_length=50, choices=[
-        ('ounce', 'Ounce'), ('cup', 'Cup'), ('lb', 'Pound'), ('kg', 'Kilogram'),
+        ('unit', 'Unit'), ('ounce', 'Ounce'), ('cup', 'Cup'), ('lb', 'Pound'), ('kg', 'Kilogram'),
         ('tsp', 'Teaspoon'), ('tbsp', 'Tablespoon'), ('ml', 'Milliliter'), ('liter', 'Liter'),
         ('piece', 'Piece'), ('pinch', 'Pinch'),
     ])

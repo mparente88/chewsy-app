@@ -120,6 +120,11 @@ class RecipeDetailView(LoginRequiredMixin, DetailView):
     template_name = 'recipes/recipe_detail.html'
     context_object_name = 'recipe'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['directions'] = self.object.directions.order_by('step_number')
+        return context
+
 from django.db import transaction
 
 from django.db import transaction
@@ -128,7 +133,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     form_class = RecipeForm
     template_name = 'recipes/recipe_form.html'
-    success_url = reverse_lazy('recipe_list')
+    success_url = reverse_lazy('recipes:recipe_list')  # Updated namespace
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -163,43 +168,67 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
         else:
             return self.form_invalid(form)
 
+
 class RecipeUpdateView(UpdateView):
     model = Recipe
     form_class = RecipeForm
     template_name = 'recipes/recipe_form.html'
 
+    def get_success_url(self):
+        return reverse_lazy('recipes:recipe_detail', kwargs={'pk': self.object.pk})
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         if self.request.POST:
+            context['direction_formset'] = DirectionFormSet(self.request.POST, instance=self.object)
             context['ingredient_formset'] = IngredientFormSet(self.request.POST, instance=self.object)
         else:
+            context['direction_formset'] = DirectionFormSet(instance=self.object)
             context['ingredient_formset'] = IngredientFormSet(instance=self.object)
+
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
+        direction_formset = context['direction_formset']
         ingredient_formset = context['ingredient_formset']
+
         with transaction.atomic():
             self.object = form.save()
-            if ingredient_formset.is_valid():
+
+            if direction_formset.is_valid() and ingredient_formset.is_valid():
+                # Save directions without overriding step_number
+                directions = direction_formset.save(commit=False)
+                for direction in directions:
+                    direction.recipe = self.object
+                    direction.save()
+
+                # Handle deletions for directions
+                for obj in direction_formset.deleted_objects:
+                    obj.delete()
+
+                # Save ingredients
                 ingredients = ingredient_formset.save(commit=False)
                 for ingredient in ingredients:
                     ingredient.recipe = self.object
                     ingredient.save()
-                ingredient_formset.save_m2m()
-                def get_success_url(self):
-                    return reverse('recipe_detail', kwargs={'pk': self.object.pk})
+
+                # Handle deletions for ingredients
+                for obj in ingredient_formset.deleted_objects:
+                    obj.delete()
+
+                return redirect(self.get_success_url())
             else:
+                # Log formset errors for debugging
+                print("Direction Formset Errors:", direction_formset.errors)
+                print("Ingredient Formset Errors:", ingredient_formset.errors)
                 return self.form_invalid(form)
-        return super().form_valid(form)
-
-
-
 
 class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipe
     template_name = 'recipes/recipe_confirm_delete.html'
-    success_url = reverse_lazy('recipe_list')
+    success_url = reverse_lazy('recipes:recipe_list')  # Updated namespace
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -210,3 +239,4 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Recipe successfully deleted!")
         return super().delete(request, *args, **kwargs)
+

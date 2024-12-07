@@ -1,3 +1,5 @@
+<!-- recipes/templates/recipes/recipe_form.html -->
+
 {% extends 'recipes/base.html' %} {% block title %}Add/Edit Recipe{% endblock %} {% block content %}
 <h2>{% if object %}Edit{% else %}Add{% endif %} Recipe</h2>
 <form method="post">
@@ -19,11 +21,15 @@
     {{ direction_formset.management_form }}
     <ul id="sortable-directions">
       {% for dform in direction_formset %}
-      <li class="direction-item" data-step="{{ forloop.counter }}">
+      <li class="direction-item">
         <div class="direction-form">
           <span class="step-label">Step {{ forloop.counter }}</span>
-          {{ dform.description }}
-          <input type="hidden" name="directions-{{ forloop.counter0 }}-step_number" value="{{ forloop.counter }}" />
+          {{ dform.description }} {{ dform.id }}
+          <!-- Hidden ID field -->
+          {{ dform.DELETE }}
+          <!-- Hidden DELETE field -->
+          {{ dform.step_number }}
+          <!-- Django-managed hidden step_number field -->
           <button type="button" class="remove-direction-button">Remove</button>
         </div>
       </li>
@@ -39,7 +45,10 @@
       {% for iform in ingredient_formset %}
       <li>
         <div>
-          {{ iform.name.label_tag }} {{ iform.name }} {{ iform.quantity.label_tag }} {{ iform.quantity }} {{ iform.measurement.label_tag }} {{ iform.measurement }} {{ iform.chef_notes.label_tag }} {{ iform.chef_notes }}
+          {{ iform.name.label_tag }} {{ iform.name }} {{ iform.quantity.label_tag }} {{ iform.quantity }} {{ iform.measurement.label_tag }} {{ iform.measurement }} {{ iform.chef_notes.label_tag }} {{ iform.chef_notes }} {{ iform.id }}
+          <!-- Hidden ID field -->
+          {{ iform.DELETE }}
+          <!-- Hidden DELETE field -->
           <button type="button" class="remove-ingredient-button">Remove</button>
         </div>
       </li>
@@ -48,6 +57,6 @@
   </div>
   <button type="button" id="add-ingredient-button">Add Ingredient</button>
 
-  <button type="submit">Save Recipe</button>
+  <button type="submit" id="save-recipe-button">Save Recipe</button>
 </form>
 {% endblock %}

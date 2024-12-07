@@ -293,20 +293,11 @@ button {
   border-radius: 5px;
   cursor: pointer;
   margin-right: 5px;
+  transition: background-color 0.3s;
 }
 
 button:hover {
   background-color: #d14d2d;
-}
-
-.move-up-button,
-.move-down-button {
-  background-color: #2a9d8f;
-}
-
-.move-up-button:hover,
-.move-down-button:hover {
-  background-color: #21867a;
 }
 
 .remove-direction-button {
@@ -389,18 +380,76 @@ button:hover {
   padding: 0;
   margin: 0;
 }
-
 .direction-item {
   background: #f9f9f9;
-  margin-bottom: 10px;
-  padding: 10px;
+  margin-bottom: 5px;
+  padding: 5px 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 2.5rem;
+  overflow: hidden;
 }
 
 .direction-item:hover {
   background: #f0f0f0;
+}
+
+.direction-item .direction-form {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.direction-item .step-label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-right: 5px;
+  white-space: nowrap;
+}
+
+.direction-item textarea {
+  flex-grow: 1;
+  font-size: 0.9rem;
+  height: 1.8rem;
+  resize: none;
+  overflow: hidden;
+  padding: 2px 5px;
+  line-height: 1.2;
+}
+
+.direction-item button {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+}
+
+#add-ingredient-button {
+  display: block;
+  width: auto;
+  margin-bottom: 1rem;
+}
+
+button[type="submit"] {
+  background-color: #2a9d8f;
+  color: white;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: #21867a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 @media (min-width: 1024px) {

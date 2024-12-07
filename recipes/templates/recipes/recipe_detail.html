@@ -1,28 +1,35 @@
+<!-- recipes/templates/recipes/recipe_detail.html -->
+
 {% extends 'recipes/base.html' %} {% block title %}{{ recipe.title }}{% endblock %} {% block content %}
 <h2>{{ recipe.title }}</h2>
+<p>{{ recipe.description }}</p>
+<p>Category: {{ recipe.category }}</p>
 
-<p><strong>Description:</strong> {{ recipe.description }}</p>
-
-<h3>Ingredients</h3>
-<ul>
-  {% for ingredient in recipe.ingredients.all %}
-  <li>{{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }} {% if ingredient.chef_notes %} - Notes: {{ ingredient.chef_notes }} {% endif %}</li>
+<h3>Tags</h3>
+<div class="tags-list">
+  {% for tag in recipe.tags.all %}
+  <div class="tag-item">{{ tag.name }}</div>
   {% endfor %}
-</ul>
+</div>
 
-<h3>Directions:</h3>
+<h3>Directions</h3>
 <div class="directions-container">
-  {% for direction in recipe.directions.all %}
+  {% for direction in directions %}
   <div class="direction-box">
-    <span class="step-number">Step {{ forloop.counter }}</span>
+    <span class="step-number">Step {{ direction.step_number }}</span>
     <p class="direction-description">{{ direction.description }}</p>
   </div>
   {% endfor %}
 </div>
 
-{% if recipe.user == request.user or user.is_staff %}
-<div class="actions">
-  <a href="{% url 'recipe_update' recipe.pk %}" class="btn-edit">Edit</a>
-  <a href="{% url 'recipe_delete' recipe.pk %}" class="btn-delete">Delete</a>
-</div>
-{% endif %} {% endblock %}
+<h3>Ingredients</h3>
+<ul>
+  {% for ingredient in recipe.ingredients.all %}
+  <li>{{ ingredient.quantity }} {{ ingredient.measurement }} of {{ ingredient.name }} {% if ingredient.chef_notes %} - {{ ingredient.chef_notes }} {% endif %}</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'recipes:recipe_edit' recipe.pk %}">Edit</a>
+<a href="{% url 'recipes:recipe_delete' recipe.pk %}" class="btn-delete">Delete</a>
+
+{% endblock %}

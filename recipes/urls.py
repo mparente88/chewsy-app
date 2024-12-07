@@ -1,9 +1,5 @@
 from django.urls import path
 from recipes.views import (
-    HomeView,
-    SignupView,
-    LoginView,
-    LogoutView,
     RecipeListView,
     RecipeDetailView,
     RecipeCreateView,
@@ -11,14 +7,12 @@ from recipes.views import (
     RecipeDeleteView,
 )
 
+app_name = 'recipes'
+
 urlpatterns = [
-    path('', HomeView.as_view(), name='home'),
-    path('signup/', SignupView.as_view(), name='signup'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('recipes/', RecipeListView.as_view(), name='recipe_list'),
-    path('recipes/<int:pk>/', RecipeDetailView.as_view(), name='recipe_detail'),
-    path('recipes/new/', RecipeCreateView.as_view(), name='recipe_create'),
-    path('recipes/<int:pk>/edit/', RecipeUpdateView.as_view(), name='recipe_update'),
-    path('recipes/<int:pk>/delete/', RecipeDeleteView.as_view(), name='recipe_delete'),
+    path('', RecipeListView.as_view(), name='recipe_list'),  # /recipes/
+    path('<int:pk>/', RecipeDetailView.as_view(), name='recipe_detail'),  # /recipes/15/
+    path('new/', RecipeCreateView.as_view(), name='recipe_create'),  # /recipes/new/
+    path('<int:pk>/edit/', RecipeUpdateView.as_view(), name='recipe_edit'),  # /recipes/15/edit/
+    path('<int:pk>/delete/', RecipeDeleteView.as_view(), name='recipe_delete'),  # /recipes/15/delete/
 ]
