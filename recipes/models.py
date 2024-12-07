@@ -4,7 +4,6 @@ from django.conf import settings
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    ingredients = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
@@ -13,6 +12,18 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
 
+class Ingredient(models.Model):
+    recipe = models.ForeignKey(Recipe, related_name="ingredients", on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    measurement = models.CharField(max_length=50, choices=[
+        ('ounce', 'Ounce'), ('cup', 'Cup'), ('lb', 'Pound'), ('kg', 'Kilogram'),
+        ('tsp', 'Teaspoon'), ('tbsp', 'Tablespoon'), ('ml', 'Milliliter'), ('liter', 'Liter'),
+        ('piece', 'Piece'), ('pinch', 'Pinch'),
+    ])
+    chef_notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.quantity} {self.measurement} (Notes: {self.chef_notes})"
 
 class Direction(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="directions")
@@ -39,3 +50,4 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
