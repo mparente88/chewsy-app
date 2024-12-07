@@ -2,7 +2,13 @@
 <h2>{{ recipe.title }}</h2>
 
 <p><strong>Description:</strong> {{ recipe.description }}</p>
-<p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+
+<h3>Ingredients</h3>
+<ul>
+  {% for ingredient in recipe.ingredients.all %}
+  <li>{{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }} {% if ingredient.chef_notes %} - Notes: {{ ingredient.chef_notes }} {% endif %}</li>
+  {% endfor %}
+</ul>
 
 <h3>Directions:</h3>
 <div class="directions-container">
@@ -13,13 +19,6 @@
   </div>
   {% endfor %}
 </div>
-
-<h3>Ingredients</h3>
-<ul>
-  {% for ingredient in recipe.ingredients.all %}
-  <li>{{ ingredient.quantity }} {{ ingredient.measurement }} - {{ ingredient.chef_notes }}</li>
-  {% endfor %}
-</ul>
 
 {% if recipe.user == request.user or user.is_staff %}
 <div class="actions">

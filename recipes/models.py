@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
@@ -14,6 +15,7 @@ class Recipe(models.Model):
 
 class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe, related_name="ingredients", on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
     quantity = models.IntegerField()
     measurement = models.CharField(max_length=50, choices=[
         ('ounce', 'Ounce'), ('cup', 'Cup'), ('lb', 'Pound'), ('kg', 'Kilogram'),
@@ -23,7 +25,8 @@ class Ingredient(models.Model):
     chef_notes = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.quantity} {self.measurement} (Notes: {self.chef_notes})"
+        return f"{self.quantity} {self.measurement} {self.name} (Notes: {self.chef_notes})"
+
 
 class Direction(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="directions")

@@ -1,17 +1,28 @@
 {% extends 'recipes/base.html' %} {% block title %}Add/Edit Recipe{% endblock %} {% block content %}
 <h2>{% if object %}Edit{% else %}Add{% endif %} Recipe</h2>
 <form method="post">
-  {% csrf_token %} {{ form.as_p }}
+  {% csrf_token %} {{ form.non_field_errors }}
+
+  <p>{{ form.title.label_tag }} {{ form.title }}</p>
+  <p>{{ form.description.label_tag }} {{ form.description }}</p>
+  <p>{{ form.category.label_tag }} {{ form.category }}</p>
+
+  <h3>Tags</h3>
+  <div class="tags-list">
+    {% for checkbox in form.tags %}
+    <div class="tag-item">{{ checkbox }}</div>
+    {% endfor %}
+  </div>
 
   <h3>Directions</h3>
   <div id="direction-forms">
     {{ direction_formset.management_form }}
     <ul id="sortable-directions">
-      {% for form in direction_formset %}
+      {% for dform in direction_formset %}
       <li class="direction-item" data-step="{{ forloop.counter }}">
         <div class="direction-form">
           <span class="step-label">Step {{ forloop.counter }}</span>
-          {{ form.description }}
+          {{ dform.description }}
           <input type="hidden" name="directions-{{ forloop.counter0 }}-step_number" value="{{ forloop.counter }}" />
           <button type="button" class="remove-direction-button">Remove</button>
         </div>
@@ -25,10 +36,10 @@
   <div id="ingredient-forms">
     {{ ingredient_formset.management_form }}
     <ul>
-      {% for form in ingredient_formset %}
+      {% for iform in ingredient_formset %}
       <li>
         <div>
-          {{ form.quantity.label_tag }} {{ form.quantity }} {{ form.measurement.label_tag }} {{ form.measurement }} {{ form.chef_notes.label_tag }} {{ form.chef_notes }}
+          {{ iform.name.label_tag }} {{ iform.name }} {{ iform.quantity.label_tag }} {{ iform.quantity }} {{ iform.measurement.label_tag }} {{ iform.measurement }} {{ iform.chef_notes.label_tag }} {{ iform.chef_notes }}
           <button type="button" class="remove-ingredient-button">Remove</button>
         </div>
       </li>

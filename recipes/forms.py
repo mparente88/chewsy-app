@@ -77,7 +77,7 @@ DirectionFormSet = inlineformset_factory(
 class IngredientForm(forms.ModelForm):
     class Meta:
         model = Ingredient
-        fields = ['quantity', 'measurement', 'chef_notes']
+        fields = ['name', 'quantity', 'measurement', 'chef_notes']
 
 IngredientFormSet = inlineformset_factory(
     parent_model=Recipe,

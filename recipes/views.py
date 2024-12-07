@@ -12,7 +12,7 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import Recipe, Category, Tag, Direction
 from .forms import RecipeForm, RecipeSearchForm, DirectionFormSet, IngredientFormSet
 
@@ -133,23 +133,33 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.POST:
+            context['direction_formset'] = DirectionFormSet(self.request.POST)
             context['ingredient_formset'] = IngredientFormSet(self.request.POST)
         else:
+            context['direction_formset'] = DirectionFormSet()
             context['ingredient_formset'] = IngredientFormSet()
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
+        direction_formset = context['direction_formset']
         ingredient_formset = context['ingredient_formset']
         form.instance.user = self.request.user
 
-        if ingredient_formset.is_valid():
-            response = super().form_valid(form)
+        if direction_formset.is_valid() and ingredient_formset.is_valid():
+            self.object = form.save()
+
+            directions = direction_formset.save(commit=False)
+            for direction in directions:
+                direction.recipe = self.object
+                direction.save()
+
             ingredients = ingredient_formset.save(commit=False)
             for ingredient in ingredients:
                 ingredient.recipe = self.object
                 ingredient.save()
-            return response
+
+            return super().form_valid(form)
         else:
             return self.form_invalid(form)
 
@@ -177,6 +187,8 @@ class RecipeUpdateView(UpdateView):
                     ingredient.recipe = self.object
                     ingredient.save()
                 ingredient_formset.save_m2m()
+                def get_success_url(self):
+                    return reverse('recipe_detail', kwargs={'pk': self.object.pk})
             else:
                 return self.form_invalid(form)
         return super().form_valid(form)
