@@ -92,3 +92,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+  const ingredientFormsContainer = document.querySelector("#ingredient-forms")
+  const addIngredientButton = document.querySelector("#add-ingredient-button")
+  const totalIngredientForms = document.querySelector("#id_ingredients-TOTAL_FORMS")
+
+  if (ingredientFormsContainer && addIngredientButton && totalIngredientForms) {
+    addIngredientButton.addEventListener("click", (event) => {
+      event.preventDefault()
+
+      const formIndex = totalIngredientForms.value
+      const newForm = ingredientFormsContainer.querySelector("li:last-child").cloneNode(true)
+
+      newForm.innerHTML = newForm.innerHTML.replace(/-\d+-/g, `-${formIndex}-`)
+
+      newForm.querySelectorAll("input").forEach((input) => {
+        input.value = ""
+      })
+
+      ingredientFormsContainer.appendChild(newForm)
+      totalIngredientForms.value = parseInt(formIndex) + 1
+    })
+
+    ingredientFormsContainer.addEventListener("click", (event) => {
+      if (event.target.classList.contains("remove-ingredient-button")) {
+        event.preventDefault()
+        const formToRemove = event.target.closest("li")
+        formToRemove.remove()
+        totalIngredientForms.value = parseInt(totalIngredientForms.value) - 1
+      }
+    })
+  }
+})

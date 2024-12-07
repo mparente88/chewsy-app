@@ -20,7 +20,23 @@
     </ul>
   </div>
   <button type="button" id="add-direction-button">Add Step</button>
+
+  <h3>Ingredients</h3>
+  <div id="ingredient-forms">
+    {{ ingredient_formset.management_form }}
+    <ul>
+      {% for form in ingredient_formset %}
+      <li>
+        <div>
+          {{ form.quantity.label_tag }} {{ form.quantity }} {{ form.measurement.label_tag }} {{ form.measurement }} {{ form.chef_notes.label_tag }} {{ form.chef_notes }}
+          <button type="button" class="remove-ingredient-button">Remove</button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <button type="button" id="add-ingredient-button">Add Ingredient</button>
+
   <button type="submit">Save Recipe</button>
 </form>
-
 {% endblock %}

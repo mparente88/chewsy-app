@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Recipe, Category, Tag, Direction
+from .models import Recipe, Category, Tag, Direction, Ingredient
 
 class RecipeSearchForm(forms.Form):
     category = forms.ModelChoiceField(
@@ -59,7 +59,7 @@ class RecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        fields = ['title', 'description', 'ingredients', 'category', 'tags']
+        fields = ['title', 'description', 'category', 'tags']
 
 class DirectionForm(forms.ModelForm):
     class Meta:
@@ -70,6 +70,19 @@ DirectionFormSet = inlineformset_factory(
     parent_model=Recipe,
     model=Direction,
     form=DirectionForm,
+    extra=1,
+    can_delete=True
+)
+
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = ['quantity', 'measurement', 'chef_notes']
+
+IngredientFormSet = inlineformset_factory(
+    parent_model=Recipe,
+    model=Ingredient,
+    form=IngredientForm,
     extra=1,
     can_delete=True
 )
