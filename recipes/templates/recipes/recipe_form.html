@@ -1,0 +1,5 @@
+<h1>{{ form.instance.pk|yesno:"Edit Recipe,Create Recipe" }}</h1>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Save</button>
+</form>
