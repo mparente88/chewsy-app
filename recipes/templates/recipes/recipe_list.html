@@ -1,11 +1,12 @@
-<h1>Recipe List</h1>
-<a href="{% url 'recipe_create' %}">Create New Recipe</a>
+{% extends 'recipes/base.html' %} {% block title %}Recipe List{% endblock %} {% block content %}
+<h2>Recipes</h2>
 <ul>
   {% for recipe in recipes %}
   <li>
-    {{ recipe.title }} - {{ recipe.description }}
-    <a href="{% url 'recipe_update' recipe.id %}">Edit</a>
+    <a href="{% url 'recipe_update' recipe.id %}">{{ recipe.title }}</a>
+    - {{ recipe.description }}
     <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
   </li>
   {% endfor %}
 </ul>
+{% endblock %}

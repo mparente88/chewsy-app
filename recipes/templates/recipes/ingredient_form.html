@@ -1,8 +1,8 @@
 {% extends 'recipes/base.html' %} {% block title %}Add Ingredient{% endblock %} {% block content %}
-<h2>Add an Ingredient for "{{ recipe.title }}"</h2>
+<h2>Add an Ingredient</h2>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Add Ingredient</button>
+  <button type="submit">Save</button>
 </form>
-<a href="{% url 'recipe_update' recipe.id %}">Cancel</a>
+<a href="{% url 'recipe_update' recipe_id %}">Cancel</a>
 {% endblock %}

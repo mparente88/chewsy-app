@@ -9,10 +9,10 @@
   </head>
   <body>
     <header>
-      <h1>Chewsy, the Taste Bud</h1>
+      <h1><a href="{% url 'recipe_list' %}">Chewsy, the Taste Bud</a></h1>
       <nav>
-        <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'recipe_list' %}">Recipes</a>
+        <a href="{% url 'recipe_create' %}">Add Recipe</a>
       </nav>
     </header>
 
