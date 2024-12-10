@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
 from .models import Recipe, Ingredient, Tag
 from .forms import RecipeForm, IngredientForm
 
@@ -94,3 +95,10 @@ class TagListView(LoginRequiredMixin, ListView):
     model = Tag
     template_name = 'tag_list.html'
     context_object_name = 'tags'
+
+# Authentication/Authorization
+
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'signup.html'
+    success_url = reverse_lazy('login')
