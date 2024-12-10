@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block title %}{{ recipe.title }}{% endblock %} {% block content %}
 <div class="recipe-detail">
-  <img src="{{ recipe.image.url|default:'/static/placeholder.jpg' }}" alt="{{ recipe.title }}" />
+  <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
   <h1>{{ recipe.title }}</h1>
   <p>{{ recipe.description }}</p>
   <p><strong>Prep Time:</strong> {{ recipe.prep_time }} mins</p>
