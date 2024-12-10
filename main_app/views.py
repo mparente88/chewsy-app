@@ -118,7 +118,8 @@ class InstructionCreateView(CreateView):
     def form_valid(self, form):
         recipe = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
         form.instance.recipe = recipe
-        form.instance.step_number = recipe.instructions.count() + 1
+        if not form.instance.step_number:
+            form.instance.step_number = recipe.instructions.count() + 1
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -134,21 +135,39 @@ class InstructionUpdateView(UpdateView):
     form_class = InstructionForm
     template_name = 'instruction_form.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['recipe'] = self.object.recipe
-        return context
+    def form_valid(self, form):
+        recipe = self.object.recipe
+        all_steps = recipe.instructions.exclude(pk=self.object.pk)
+        step_numbers = {step.step_number for step in all_steps}
+
+        if form.instance.step_number in step_numbers:
+            form.instance.step_number = max(step_numbers) + 1
+
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+
 
 
 class InstructionDeleteView(DeleteView):
     model = Instruction
     template_name = 'instruction_confirm_delete.html'
 
+    def delete(self, request, *args, **kwargs):
+        instruction = self.get_object()
+        recipe = instruction.recipe
+        instruction.delete()
+
+        for index, step in enumerate(recipe.instructions.all(), start=1):
+            step.step_number = index
+            step.save()
+
+        return super().delete(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+
 
 
 # Authentication/Authorization
