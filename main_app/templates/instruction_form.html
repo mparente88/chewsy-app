@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% block title %}Add/Edit Instruction{% endblock %} {% block content %}
-<h1>Add/Edit Instruction</h1>
+{% extends 'base.html' %} {% block title %}{{ instruction.pk|default:'Add' }} Instruction{% endblock %} {% block content %}
+<h1>{{ instruction.pk|default:'Add' }} Instruction</h1>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
   <button type="submit" class="btn">Save</button>
