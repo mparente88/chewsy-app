@@ -82,3 +82,25 @@ a:hover {
 .btn:hover {
   background-color: #0056b3;
 }
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #333;
+  padding: 1rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.welcome-message {
+  color: #fff;
+  font-style: italic;
+}
