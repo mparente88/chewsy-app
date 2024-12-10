@@ -121,8 +121,13 @@ class InstructionCreateView(CreateView):
         form.instance.step_number = recipe.instructions.count() + 1
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recipe'] = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
+        return context
+
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
+        return reverse('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
 
 class InstructionUpdateView(UpdateView):
     model = Instruction
