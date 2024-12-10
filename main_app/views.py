@@ -8,7 +8,7 @@ from .forms import RecipeForm, IngredientForm
 
 class RecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
-    template_name = 'recipes/recipe_list.html'
+    template_name = 'recipe_list.html'
     context_object_name = 'recipes'
 
     def get_queryset(self):
@@ -16,7 +16,7 @@ class RecipeListView(LoginRequiredMixin, ListView):
     
 class RecipeDetailView(LoginRequiredMixin, DetailView):
     model = Recipe
-    template_name = 'recipes/recipe_detail.html'
+    template_name = 'recipe_detail.html'
     context_object_name = 'recipe'
 
     def get_queryset(self):
@@ -25,7 +25,7 @@ class RecipeDetailView(LoginRequiredMixin, DetailView):
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     form_class = RecipeForm
-    template_name = 'recipes/recipe_form.html'
+    template_name = 'recipe_form.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -37,7 +37,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Recipe
     form_class = RecipeForm
-    template_name = 'recipes/recipe_form.html'
+    template_name = 'recipe_form.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -52,7 +52,7 @@ class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     
 class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Recipe
-    template_name = 'recipes/recipe_confirm_delete.html'
+    template_name = 'recipe_confirm_delete.html'
     success_url = reverse_lazy('recipe_list')
 
     def test_func(self):
@@ -64,7 +64,7 @@ class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class IngredientCreateView(LoginRequiredMixin, CreateView):
     model = Ingredient
     form_class = IngredientForm
-    template_name = 'recipes/ingredient_form.html'
+    template_name = 'ingredient_form.html'
 
     def form_valid(self, form):
         form.instance.recipe_id = self.kwargs['recipe_id']
@@ -76,14 +76,14 @@ class IngredientCreateView(LoginRequiredMixin, CreateView):
 class IngredientUpdateView(LoginRequiredMixin, UpdateView):
     model = Ingredient
     form_class = IngredientForm
-    template_name = 'recipes/ingredient_form.html'
+    template_name = 'ingredient_form.html'
 
     def get_success_url(self):
         return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
     
 class IngredientDeleteView(LoginRequiredMixin, DeleteView):
     model = Ingredient
-    template_name = 'recipes/ingredient_confirm_delete.html'
+    template_name = 'ingredient_confirm_delete.html'
 
     def get_success_url(self):
         return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
@@ -92,5 +92,5 @@ class IngredientDeleteView(LoginRequiredMixin, DeleteView):
 
 class TagListView(LoginRequiredMixin, ListView):
     model = Tag
-    template_name = 'recipes/tag_list.html'
+    template_name = 'tag_list.html'
     context_object_name = 'tags'
