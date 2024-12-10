@@ -7,17 +7,19 @@
   <p><strong>Cook Time:</strong> {{ recipe.cook_time }} mins</p>
   <p><strong>Servings:</strong> {{ recipe.servings }}</p>
 
-  <h2>Ingredients</h2>
-  <ul>
-    {% for ingredient in recipe.ingredients.all %}
+  <h2>Instructions</h2>
+  <ol>
+    {% for instruction in recipe.instructions.all %}
     <li>
-      {{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }}
-      <a href="{% url 'ingredient_update' ingredient.pk %}">Edit</a>
-      <a href="{% url 'ingredient_delete' ingredient.pk %}">Delete</a>
+      {{ instruction.description }} {% if instruction.time_minutes %}
+      <span> ({{ instruction.time_minutes }} mins)</span>
+      {% endif %}
+      <a href="{% url 'instruction_update' instruction.pk %}">Edit</a>
+      <a href="{% url 'instruction_delete' instruction.pk %}">Delete</a>
     </li>
     {% endfor %}
-  </ul>
-  <a href="{% url 'ingredient_create' recipe.pk %}" class="btn">Add Ingredient</a>
+  </ol>
+  <a href="{% url 'instruction_create' recipe.pk %}" class="btn">Add Instruction</a>
 
   <h2>Actions</h2>
   <a href="{% url 'recipe_update' recipe.pk %}" class="btn">Edit Recipe</a>

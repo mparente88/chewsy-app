@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recipe, Ingredient, Tag
+from .models import Recipe, Ingredient, Tag, Instruction
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
@@ -23,3 +23,9 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
     list_filter = ('category',)
     search_fields = ('name',)
+
+@admin.register(Instruction)
+class InstructionAdmin(admin.ModelAdmin):
+    list_display = ('recipe', 'step_number', 'description', 'time_minutes')
+    list_filter = ('recipe',)
+    ordering = ('recipe', 'step_number')

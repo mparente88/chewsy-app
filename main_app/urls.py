@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 from .views import (
     RecipeListView, RecipeDetailView, RecipeCreateView, RecipeUpdateView, RecipeDeleteView,
     IngredientCreateView, IngredientUpdateView, IngredientDeleteView,
-    TagListView, SignUpView
+    TagListView, SignUpView, InstructionCreateView, InstructionDeleteView, InstructionUpdateView
 )
 
 urlpatterns = [
@@ -19,4 +19,7 @@ urlpatterns = [
     path('ingredient/<int:pk>/edit/', IngredientUpdateView.as_view(), name='ingredient_update'),
     path('ingredient/<int:pk>/delete/', IngredientDeleteView.as_view(), name='ingredient_delete'),
     path('tags/', TagListView.as_view(), name='tag_list'),
+    path('recipe/<int:recipe_id>/instruction/new/', InstructionCreateView.as_view(), name='instruction_create'),
+    path('instruction/<int:pk>/edit/', InstructionUpdateView.as_view(), name='instruction_update'),
+    path('instruction/<int:pk>/delete/', InstructionDeleteView.as_view(), name='instruction_delete'),
 ]

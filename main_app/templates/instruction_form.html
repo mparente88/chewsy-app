@@ -1,0 +1,8 @@
+{% extends 'base.html' %} {% block title %}Add/Edit Instruction{% endblock %} {% block content %}
+<h1>Add/Edit Instruction</h1>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit" class="btn">Save</button>
+</form>
+<a href="{% url 'recipe_detail' recipe.pk %}">Back to Recipe</a>
+{% endblock %}

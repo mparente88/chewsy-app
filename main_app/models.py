@@ -55,3 +55,22 @@ class Tag(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.category})"
+
+class Instruction(models.Model):
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name="instructions"
+    )
+    step_number = models.PositiveIntegerField()
+    description = models.TextField()
+    time_minutes = models.PositiveIntegerField(
+        null=True, blank=True,
+        help_text="Estimated time for this step in minutes"
+    )
+
+    class Meta:
+        ordering = ['step_number']
+
+    def __str__(self):
+        return f"Step {self.step_number}: {self.description[:50]}"

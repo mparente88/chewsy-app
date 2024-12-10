@@ -3,8 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import get_object_or_404
-from .models import Recipe, Ingredient, Tag
-from .forms import RecipeForm, IngredientForm
+from .models import Recipe, Ingredient, Tag, Instruction
+from .forms import RecipeForm, IngredientForm, InstructionForm
 
 # Recipes
 
@@ -107,6 +107,37 @@ class TagListView(LoginRequiredMixin, ListView):
     model = Tag
     template_name = 'tag_list.html'
     context_object_name = 'tags'
+
+# Instructions
+
+class InstructionCreateView(CreateView):
+    model = Instruction
+    form_class = InstructionForm
+    template_name = 'instruction_form.html'
+
+    def form_valid(self, form):
+        recipe = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
+        form.instance.recipe = recipe
+        form.instance.step_number = recipe.instructions.count() + 1
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
+
+class InstructionUpdateView(UpdateView):
+    model = Instruction
+    form_class = InstructionForm
+    template_name = 'instruction_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+
+class InstructionDeleteView(DeleteView):
+    model = Instruction
+    template_name = 'instruction_confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
 
 # Authentication/Authorization
 
