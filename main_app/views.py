@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import get_object_or_404
 from .models import Recipe, Ingredient, Tag
 from .forms import RecipeForm, IngredientForm
 
@@ -68,11 +69,12 @@ class IngredientCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ingredient_form.html'
 
     def form_valid(self, form):
-        form.instance.recipe_id = self.kwargs['recipe_id']
+        recipe = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
+        form.instance.recipe = recipe
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
     
 class IngredientUpdateView(LoginRequiredMixin, UpdateView):
     model = Ingredient
@@ -80,14 +82,14 @@ class IngredientUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'ingredient_form.html'
 
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
     
 class IngredientDeleteView(LoginRequiredMixin, DeleteView):
     model = Ingredient
     template_name = 'ingredient_confirm_delete.html'
 
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
     
 # Tags
 
