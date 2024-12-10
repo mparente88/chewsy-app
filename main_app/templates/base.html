@@ -4,27 +4,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Recipe Manager{% endblock %}</title>
+    <title>{% block title %}Chewsy - {% endblock %}The Taste Bud</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
   </head>
   <body>
     <header>
-      <nav>
-        <a href="{% url 'recipe_list' %}">Home</a>
-        {% if user.is_authenticated %}
-        <a href="{% url 'recipe_create' %}">New Recipe</a>
-        <a href="{% url 'tag_list' %}">Tags</a>
-        <a href="{% url 'logout' %}">Logout</a>
-        <span class="welcome-message">Welcome, {{ user.username }}!</span>
-        {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Sign Up</a>
-        {% endif %}
-      </nav>
+      <div class="container">
+        <h1><a href="{% url 'recipe_list' %}">Chewsy</a></h1>
+        <p class="tagline">Beggars Can't Be Chewsers</p>
+        <nav>
+          {% if user.is_authenticated %}
+          <a href="{% url 'recipe_create' %}">New Recipe</a>
+          <a href="{% url 'tag_list' %}">Tags</a>
+          <a href="{% url 'logout' %}">Logout</a>
+          <span>Welcome, {{ user.username }}!</span>
+          {% else %}
+          <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'signup' %}">Sign Up</a>
+          {% endif %}
+        </nav>
+      </div>
     </header>
-    <main>{% block content %}{% endblock %}</main>
+    <main class="container">{% block content %}{% endblock %}</main>
     <footer>
-      <p>&copy; 2024 Recipe Manager</p>
+      <p>&copy; 2024 Chewsy</p>
     </footer>
   </body>
 </html>
