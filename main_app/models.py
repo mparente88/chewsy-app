@@ -7,11 +7,14 @@ class Recipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     prep_time = models.IntegerField()
     cook_time = models.IntegerField()
-    total_time = models.IntegerField()
     servings = models.IntegerField()
     image = models.ImageField(upload_to='main_app/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def total_time(self):
+        return self.prep_time + self.cook_time
 
 class Ingredient(models.Model):
     MEASUREMENT_CHOICES = [
@@ -48,4 +51,7 @@ class Tag(models.Model):
     ]
     name = models.CharField(max_length=50)
     category = models.CharField(max_length=20, choices=TAG_CATEGORY_CHOICES)
-    recipes = models.ManyToManyField(Recipe, related_name="tags")
+    recipes = models.ManyToManyField(Recipe, related_name="tags", blank=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.category})"

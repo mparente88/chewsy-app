@@ -7,7 +7,9 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ('user', 'created_at', 'tags')
     search_fields = ('title', 'description')
     autocomplete_fields = ('tags',)
-    prepopulated_fields = {'total_time': ('prep_time', 'cook_time')}
+    def total_time(self, obj):
+        return obj.total_time
+    total_time.short_description = 'Total Time'
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
