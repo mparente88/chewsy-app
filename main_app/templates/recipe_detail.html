@@ -9,7 +9,11 @@
 <h2>Ingredients</h2>
 <ul>
   {% for ingredient in recipe.ingredients.all %}
-  <li>{{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }}</li>
+  <li>
+    {{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }}
+    <a href="{% url 'ingredient_update' ingredient.pk %}">Edit</a>
+    <a href="{% url 'ingredient_delete' ingredient.pk %}">Delete</a>
+  </li>
   {% endfor %}
 </ul>
 <a href="{% url 'ingredient_create' recipe.pk %}" class="btn">Add Ingredient</a>

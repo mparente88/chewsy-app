@@ -2,7 +2,7 @@
 <h1>Add Ingredient</h1>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit" class="btn">Add</button>
+  <button type="submit" class="btn">Save</button>
 </form>
 <a href="{% url 'recipe_detail' recipe.pk %}">Back to Recipe</a>
 {% endblock %}

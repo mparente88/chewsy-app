@@ -1,9 +1,9 @@
 {% extends 'base.html' %} {% block title %}Delete Ingredient{% endblock %} {% block content %}
 <h1>Delete Ingredient</h1>
-<p>Are you sure you want to delete the ingredient "{{ ingredient.name }}"? This action cannot be undone.</p>
+<p>Are you sure you want to delete "{{ ingredient.name }}"?</p>
 <form method="post">
   {% csrf_token %}
   <button type="submit" class="btn">Yes, Delete</button>
-  <a href="{% url 'recipe_detail' ingredient.recipe.pk %}" class="btn">Cancel</a>
 </form>
+<a href="{% url 'recipe_detail' ingredient.recipe.pk %}" class="btn">Cancel</a>
 {% endblock %}
