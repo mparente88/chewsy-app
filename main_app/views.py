@@ -134,15 +134,22 @@ class InstructionUpdateView(UpdateView):
     form_class = InstructionForm
     template_name = 'instruction_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recipe'] = self.object.recipe
+        return context
+
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+        return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+
 
 class InstructionDeleteView(DeleteView):
     model = Instruction
     template_name = 'instruction_confirm_delete.html'
 
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+        return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+
 
 # Authentication/Authorization
 
