@@ -7,7 +7,10 @@
     <fieldset>
       <legend>{{ category|title }}</legend>
       {% for tag in tags %}
-      <label> <input type="checkbox" name="tags" value="{{ tag.id }}" {% if tag.id|stringformat:"s" in request.GET.getlist('tags') %}checked{% endif %}> {{ tag.name }} </label>
+      <label>
+        <input type="checkbox" name="tags" value="{{ tag.id }}" {% if tag.id in selected_tags %}checked{% endif %} />
+        {{ tag.name }}
+      </label>
       {% endfor %}
     </fieldset>
     {% endfor %}
