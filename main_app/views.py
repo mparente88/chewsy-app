@@ -24,6 +24,11 @@ class MyRecipesListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tags'] = Tag.objects.all()
+        context['selected_tags'] = [int(tag) for tag in self.request.GET.getlist('tags') if tag.isdigit()]
+        context['tag_categories'] = {
+            category: Tag.objects.filter(category=category)
+            for category, _ in Tag.TAG_CATEGORY_CHOICES
+        }
         return context
     
 class AllRecipesListView(ListView):

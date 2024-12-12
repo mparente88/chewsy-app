@@ -1,8 +1,10 @@
 {% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %}
 <h1>All Recipes</h1>
 
-<form method="get" action="">
-  <div class="tag-filter">
+<button id="filter-toggle" class="btn">Filter Recipes</button>
+
+<div id="filter-container" class="tag-filter" style="display: none">
+  <form method="get" action="">
     {% for category, tags in tag_categories.items %}
     <fieldset>
       <legend>{{ category|title }}</legend>
@@ -14,9 +16,9 @@
       {% endfor %}
     </fieldset>
     {% endfor %}
-  </div>
-  <button type="submit" class="btn">Filter</button>
-</form>
+    <button type="submit" class="btn">Apply Filter</button>
+  </form>
+</div>
 
 <div class="recipe-grid">
   {% for recipe in recipes %}
@@ -32,3 +34,14 @@
   {% endfor %}
 </div>
 {% endblock %}
+
+<script>
+  document.getElementById("filter-toggle").addEventListener("click", function () {
+    const filterContainer = document.getElementById("filter-container")
+    if (filterContainer.style.display === "none") {
+      filterContainer.style.display = "block"
+    } else {
+      filterContainer.style.display = "none"
+    }
+  })
+</script>

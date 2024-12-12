@@ -1,20 +1,24 @@
 {% extends 'base.html' %} {% block title %}My Recipes{% endblock %} {% block content %}
 <h1>My Recipes</h1>
 
-<form method="get" action="">
-  {% for category, tags in tag_categories.items %}
-  <fieldset>
-    <legend>{{ category|title }}</legend>
-    {% for tag in tags %}
-    <label>
-      <input type="checkbox" name="tags" value="{{ tag.id }}" {% if tag.id in selected_tags %}checked{% endif %} />
-      {{ tag.name }}
-    </label>
+<button id="filter-toggle" class="btn">Filter Recipes</button>
+
+<div id="filter-container" class="tag-filter" style="display: none">
+  <form method="get" action="">
+    {% for category, tags in tag_categories.items %}
+    <fieldset>
+      <legend>{{ category|title }}</legend>
+      {% for tag in tags %}
+      <label>
+        <input type="checkbox" name="tags" value="{{ tag.id }}" {% if tag.id in selected_tags %}checked{% endif %} />
+        {{ tag.name }}
+      </label>
+      {% endfor %}
+    </fieldset>
     {% endfor %}
-  </fieldset>
-  {% endfor %}
-  <button type="submit" class="btn">Filter</button>
-</form>
+    <button type="submit" class="btn">Apply Filter</button>
+  </form>
+</div>
 
 <div class="recipe-grid">
   {% for recipe in recipes %}
@@ -25,7 +29,20 @@
       <p>Prep: {{ recipe.prep_time }} mins | Cook: {{ recipe.cook_time }} mins</p>
     </div>
   </div>
+  {% empty %}
+  <p>No recipes found. Try selecting different tags.</p>
   {% endfor %}
 </div>
 <a href="{% url 'recipe_create' %}" class="btn">Add New Recipe</a>
 {% endblock %}
+
+<script>
+  document.getElementById("filter-toggle").addEventListener("click", function () {
+    const filterContainer = document.getElementById("filter-container")
+    if (filterContainer.style.display === "none") {
+      filterContainer.style.display = "block"
+    } else {
+      filterContainer.style.display = "none"
+    }
+  })
+</script>
