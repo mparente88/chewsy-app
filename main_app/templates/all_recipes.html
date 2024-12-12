@@ -1,14 +1,31 @@
-{% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %}
+{% extends 'base.html' %}
+
+{% block title %}All Recipes{% endblock %}
+
+{% block content %}
 <h1>All Recipes</h1>
+
+<form method="get" action="">
+    <label for="tag">Filter by Tag:</label>
+    <select name="tag" id="tag" onchange="this.form.submit()">
+        <option value="">All</option>
+        {% for tag in tags %}
+        <option value="{{ tag.id }}" {% if tag.id|stringformat:"s" == request.GET.tag %}selected{% endif %}>
+            {{ tag.name }}
+        </option>
+        {% endfor %}
+    </select>
+</form>
+
 <div class="recipe-grid">
   {% for recipe in recipes %}
-  <div class="recipe-card">
-    <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
-    <div class="recipe-info">
-      <h2><a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a></h2>
-      <p>Prep: {{ recipe.prep_time }} mins | Cook: {{ recipe.cook_time }} mins</p>
+    <div class="recipe-card">
+      <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
+      <div class="recipe-info">
+        <h2><a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a></h2>
+        <p>Prep: {{ recipe.prep_time }} mins | Cook: {{ recipe.cook_time }} mins</p>
+      </div>
     </div>
-  </div>
   {% endfor %}
 </div>
 {% endblock %}

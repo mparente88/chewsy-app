@@ -14,12 +14,36 @@ class MyRecipesListView(LoginRequiredMixin, ListView):
     context_object_name = 'recipes'
 
     def get_queryset(self):
-        return Recipe.objects.filter(user=self.request.user)
+        queryset = Recipe.objects.filter(user=self.request.user)
+        tag_id = self.request.GET.get('tag')
+        if tag_id:
+            queryset = queryset.filter(tags__id=tag_id)
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
+        return context
     
 class AllRecipesListView(ListView):
     model = Recipe
     template_name = 'all_recipes.html'
     context_object_name = 'recipes'
+
+    def get_queryset(self):
+        queryset = Recipe.objects.all()
+
+        tag_id = self.request.GET.get('tag')
+        if tag_id:
+            queryset = queryset.filter(tags__id=tag_id)
+
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
+        return context
 
 class RecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
