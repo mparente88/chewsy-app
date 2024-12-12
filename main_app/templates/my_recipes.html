@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block title %}My Recipes{% endblock %} {% block content %}
+<h1>My Recipes</h1>
+<div class="recipe-grid">
+  {% for recipe in recipes %}
+  <div class="recipe-card">
+    <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
+    <div class="recipe-info">
+      <h2><a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a></h2>
+      <p>Prep: {{ recipe.prep_time }} mins | Cook: {{ recipe.cook_time }} mins</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<a href="{% url 'recipe_create' %}" class="btn">Add New Recipe</a>
+{% endblock %}

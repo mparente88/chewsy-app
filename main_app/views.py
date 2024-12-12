@@ -8,6 +8,19 @@ from .forms import RecipeForm, IngredientForm, InstructionForm
 
 # Recipes
 
+class MyRecipesListView(LoginRequiredMixin, ListView):
+    model = Recipe
+    template_name = 'my_recipes.html'
+    context_object_name = 'recipes'
+
+    def get_queryset(self):
+        return Recipe.objects.filter(user=self.request.user)
+    
+class AllRecipesListView(ListView):
+    model = Recipe
+    template_name = 'all_recipes.html'
+    context_object_name = 'recipes'
+
 class RecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = 'recipe_list.html'
@@ -130,25 +143,21 @@ class InstructionCreateView(CreateView):
     def get_success_url(self):
         return reverse('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
 
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+
 class InstructionUpdateView(UpdateView):
     model = Instruction
     form_class = InstructionForm
     template_name = 'instruction_form.html'
 
-    def form_valid(self, form):
-        recipe = self.object.recipe
-        all_steps = recipe.instructions.exclude(pk=self.object.pk)
-        step_numbers = {step.step_number for step in all_steps}
-
-        if form.instance.step_number in step_numbers:
-            form.instance.step_number = max(step_numbers) + 1
-
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recipe'] = self.object.recipe
+        return context
 
     def get_success_url(self):
         return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
-
-
 
 class InstructionDeleteView(DeleteView):
     model = Instruction
