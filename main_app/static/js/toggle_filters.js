@@ -10,3 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   })
 })
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tagField = document.querySelector("#id_tags")
+  if (tagField) {
+    $(tagField).select2({
+      placeholder: "Select tags",
+      allowClear: true,
+      width: "100%",
+    })
+  }
+})
