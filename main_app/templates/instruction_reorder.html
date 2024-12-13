@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block title %}Reorder Instructions{% endblock %} {% block content %}
+<h1>Reorder Instructions for "{{ recipe.title }}"</h1>
+<p>Drag and drop the instructions to reorder them, then click "Save Order".</p>
+
+<form method="post" id="reorder-form">
+  {% csrf_token %}
+  <ul id="instruction-list">
+    {% for instruction in instructions %}
+    <li data-id="{{ instruction.pk }}" class="instruction-item">
+      <span class="drag-handle">&#9776;</span>
+      <span class="instruction-text"><strong>Step {{ instruction.step_number }}:</strong> {{ instruction.description }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <button type="submit" class="btn">Save Order</button>
+  <a href="{% url 'recipe_detail' recipe.pk %}" class="btn">Cancel</a>
+</form>
+{% endblock %}

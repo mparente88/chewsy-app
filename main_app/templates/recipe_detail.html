@@ -40,6 +40,7 @@
     {% endfor %}
   </ol>
   <a href="{% url 'instruction_create' recipe.pk %}" class="btn">Add Instruction</a>
+  <a href="{% url 'instructions_reorder' recipe.pk %}" class="btn">Reorder Instructions</a>
 
   <h2>Actions</h2>
   <a href="{% url 'recipe_update' recipe.pk %}" class="btn">Edit Recipe</a>

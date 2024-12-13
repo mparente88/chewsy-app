@@ -1,9 +1,10 @@
 from django.db import models
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Recipe, Ingredient, Tag, Instruction
 from .forms import RecipeForm, IngredientForm, InstructionForm
 
@@ -225,6 +226,25 @@ class InstructionDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+    
+class InstructionReorderView(LoginRequiredMixin, View):
+    template_name = 'instruction_reorder.html'
+
+    def get(self, request, recipe_id):
+        recipe = get_object_or_404(Recipe, pk=recipe_id, user=request.user)
+        instructions = recipe.instructions.order_by('step_number')
+        return render(request, self.template_name, {'recipe': recipe, 'instructions': instructions})
+    
+    def post(self, request, recipe_id):
+        recipe = get_object_or_404(Recipe, pk=recipe_id, user=request.user)
+        new_order = request.POST.getlist('order[]', [])
+
+        for index, instr_id in enumerate(new_order, start=1):
+            instruction = recipe.instructions.get(pk=instr_id)
+            instruction.step_number = index
+            instruction.save()
+
+        return redirect('recipe_detail', pk=recipe.pk)
 
 # Authentication/Authorization
 
