@@ -18,6 +18,15 @@ h2 {
   color: #1a73e8;
 }
 
+a {
+  text-decoration: none;
+  color: #1a73e8;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 /* Header */
 header {
   background-color: #1a73e8;
@@ -28,7 +37,6 @@ header {
 
 header h1 a {
   color: white;
-  text-decoration: none;
 }
 
 header .tagline {
@@ -37,14 +45,8 @@ header .tagline {
 }
 
 header nav a {
-  color: white;
   margin: 0 15px;
-  text-decoration: none;
   font-weight: bold;
-}
-
-header nav a:hover {
-  text-decoration: underline;
 }
 
 /* Recipe Grid */
@@ -77,26 +79,26 @@ header nav a:hover {
   font-size: 1.25rem;
 }
 
-.recipe-card a {
-  text-decoration: none;
-  color: #1a73e8;
-}
-
 /* Buttons */
 .btn {
   display: inline-block;
   padding: 10px 20px;
   background-color: #1a73e8;
   color: white;
-  text-decoration: none;
   border-radius: 5px;
   text-align: center;
   font-weight: bold;
   margin-top: 15px;
 }
 
-.btn:hover {
+.btn:hover,
+button.btn:hover {
   background-color: #155ab2;
+}
+
+button.btn {
+  border: none;
+  cursor: pointer;
 }
 
 /* Footer */
@@ -109,17 +111,27 @@ footer {
   margin-top: 40px;
 }
 
-.tag-filter {
-  margin-bottom: 20px;
-  padding: 10px;
+/* Tag Filter */
+#filter-toggle {
+  margin-bottom: 10px;
+}
+
+#filter-container {
+  padding: 15px;
   background-color: #f7f8fa;
   border: 1px solid #ddd;
   border-radius: 8px;
+  margin-bottom: 20px;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
 }
 
 fieldset {
   border: none;
   margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
 }
 
 legend {
@@ -135,53 +147,23 @@ label {
   cursor: pointer;
 }
 
-fieldset {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+/* Tags */
+.tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
-button.btn {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #1a73e8;
-  color: white;
-  font-weight: bold;
-  border: none;
+.tags li {
+  background-color: #f1f1f1;
+  color: #333;
   border-radius: 5px;
-  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 0.9rem;
 }
 
-button.btn:hover {
-  background-color: #155ab2;
-}
-
-/* Filter Button */
-#filter-toggle {
-  margin-bottom: 10px;
-  padding: 10px 20px;
-  background-color: #1a73e8;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#filter-toggle:hover {
-  background-color: #155ab2;
-}
-
-/* Tag Filter Container */
-.tag-filter {
-  padding: 15px;
-  background-color: #f7f8fa;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-#filter-container {
-  transition: max-height 0.3s ease-out;
-  overflow: hidden;
+.tags li:hover {
+  background-color: #ddd;
 }

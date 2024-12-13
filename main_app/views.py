@@ -1,3 +1,4 @@
+from django.db import models
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
@@ -8,6 +9,11 @@ from .forms import RecipeForm, IngredientForm, InstructionForm
 
 # Recipes
 
+from django.views.generic import ListView
+from django.db import models
+from .models import Recipe, Tag
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 class MyRecipesListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = 'my_recipes.html'
@@ -15,22 +21,28 @@ class MyRecipesListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = Recipe.objects.filter(user=self.request.user)
+
         tag_ids = self.request.GET.getlist('tags')
         if tag_ids:
-            queryset = queryset.filter(tags__id__in=tag_ids).distinct()
-        
-        return queryset
-    
+            queryset = (
+                queryset.filter(tags__id__in=tag_ids) 
+                .annotate(tag_count=models.Count('tags')) 
+                .filter(tag_count=len(tag_ids))  
+            )
+
+        return queryset.distinct()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.all()
+        context['tags'] = Tag.objects.all() 
         context['selected_tags'] = [int(tag) for tag in self.request.GET.getlist('tags') if tag.isdigit()]
         context['tag_categories'] = {
             category: Tag.objects.filter(category=category)
             for category, _ in Tag.TAG_CATEGORY_CHOICES
         }
         return context
-    
+
+
 class AllRecipesListView(ListView):
     model = Recipe
     template_name = 'all_recipes.html'
@@ -38,15 +50,21 @@ class AllRecipesListView(ListView):
 
     def get_queryset(self):
         queryset = Recipe.objects.all()
-        tag_ids = self.request.GET.getlist('tags') 
+
+        tag_ids = self.request.GET.getlist('tags')
         if tag_ids:
-            queryset = queryset.filter(tags__id__in=tag_ids).distinct()
-        return queryset
+            queryset = (
+                queryset.filter(tags__id__in=tag_ids)
+                .annotate(tag_count=models.Count('tags'))
+                .filter(tag_count=len(tag_ids))
+            )
+
+        return queryset.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.all() 
-        context['selected_tags'] = [int(tag) for tag in self.request.GET.getlist('tags') if tag.isdigit()] 
+        context['tags'] = Tag.objects.all()
+        context['selected_tags'] = [int(tag) for tag in self.request.GET.getlist('tags') if tag.isdigit()]
         context['tag_categories'] = {
             category: Tag.objects.filter(category=category)
             for category, _ in Tag.TAG_CATEGORY_CHOICES
@@ -117,35 +135,29 @@ class IngredientCreateView(CreateView):
     def form_valid(self, form):
         recipe = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
         form.instance.recipe = recipe
+        if form.instance.order is None:
+            form.instance.order = recipe.ingredients.count() + 1
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['recipe'] = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
-        return context
-
     def get_success_url(self):
-        return reverse('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
-    
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
+
+
 class IngredientUpdateView(UpdateView):
     model = Ingredient
     form_class = IngredientForm
     template_name = 'ingredient_form.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['recipe'] = self.object.recipe
-        return context
-
     def get_success_url(self):
-        return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
-    
-class IngredientDeleteView(LoginRequiredMixin, DeleteView):
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
+
+
+class IngredientDeleteView(DeleteView):
     model = Ingredient
     template_name = 'ingredient_confirm_delete.html'
 
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
     
 # Tags
 

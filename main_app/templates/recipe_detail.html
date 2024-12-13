@@ -2,10 +2,30 @@
 <div class="recipe-detail">
   <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
   <h1>{{ recipe.title }}</h1>
+  <h2>Tags</h2>
+  <ul class="tags">
+    {% for tag in recipe.tags.all %}
+    <li>{{ tag.name }} ({{ tag.get_category_display }})</li>
+    {% empty %}
+    <p>No tags assigned to this recipe.</p>
+    {% endfor %}
+  </ul>
   <p>{{ recipe.description }}</p>
   <p><strong>Prep Time:</strong> {{ recipe.prep_time }} mins</p>
   <p><strong>Cook Time:</strong> {{ recipe.cook_time }} mins</p>
   <p><strong>Servings:</strong> {{ recipe.servings }}</p>
+
+  <h2>Ingredients</h2>
+  <ul>
+    {% for ingredient in recipe.ingredients.all %}
+    <li>
+      {{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }}
+      <a href="{% url 'ingredient_update' ingredient.pk %}" class="btn btn-sm">Edit</a>
+      <a href="{% url 'ingredient_delete' ingredient.pk %}" class="btn btn-sm btn-danger">Delete</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'ingredient_create' recipe.pk %}" class="btn">Add Ingredient</a>
 
   <h2>Instructions</h2>
   <ol>

@@ -1,8 +1,8 @@
-{% extends 'base.html' %} {% block title %}{{ instruction.pk|default:'Add' }} Instruction{% endblock %} {% block content %}
-<h1>{{ instruction.pk|default:'Add' }} Instruction</h1>
+{% extends 'base.html' %} {% block title %}Add/Edit Ingredient{% endblock %} {% block content %}
+<h1>{% if object %}Edit{% else %}Add{% endif %} Ingredient</h1>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit" class="btn">Save</button>
+  <button type="submit" class="btn">{% if object %}Save{% else %}Add{% endif %} Ingredient</button>
+  <a href="{% url 'recipe_detail' object.recipe.pk if object else request.resolver_match.kwargs.recipe_id %}" class="btn">Cancel</a>
 </form>
-<a href="{% url 'recipe_detail' recipe.pk %}">Back to Recipe</a>
 {% endblock %}
