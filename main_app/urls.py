@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import (
-    RecipeListView, RecipeDetailView, RecipeCreateView, RecipeUpdateView, RecipeDeleteView,
+    RecipeDetailView, RecipeCreateView, RecipeUpdateView, RecipeDeleteView,
     IngredientCreateView, IngredientUpdateView, IngredientDeleteView,
     TagListView, SignUpView, InstructionCreateView, InstructionDeleteView, InstructionUpdateView, AllRecipesListView, MyRecipesListView
 )

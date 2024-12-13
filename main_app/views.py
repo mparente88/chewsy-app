@@ -70,15 +70,6 @@ class AllRecipesListView(ListView):
             for category, _ in Tag.TAG_CATEGORY_CHOICES
         }
         return context
-
-
-class RecipeListView(LoginRequiredMixin, ListView):
-    model = Recipe
-    template_name = 'recipe_list.html'
-    context_object_name = 'recipes'
-
-    def get_queryset(self):
-        return Recipe.objects.filter(user=self.request.user)
     
 class RecipeDetailView(LoginRequiredMixin, DetailView):
     model = Recipe
@@ -132,24 +123,37 @@ class IngredientCreateView(CreateView):
     form_class = IngredientForm
     template_name = 'ingredient_form.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.recipe = get_object_or_404(Recipe, pk=kwargs['recipe_id'])
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        recipe = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
-        form.instance.recipe = recipe
+        form.instance.recipe = self.recipe
         if form.instance.order is None:
-            form.instance.order = recipe.ingredients.count() + 1
+            form.instance.order = self.recipe.ingredients.count() + 1
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.recipe.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recipe'] = self.recipe
+        return context
 
 class IngredientUpdateView(UpdateView):
     model = Ingredient
     form_class = IngredientForm
     template_name = 'ingredient_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ingredient = self.object
+        context['recipe'] = ingredient.recipe
+        return context
+
     def get_success_url(self):
-        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe_id})
+        return reverse_lazy('recipe_detail', kwargs={'pk': self.object.recipe.pk})
 
 
 class IngredientDeleteView(DeleteView):
@@ -173,23 +177,23 @@ class InstructionCreateView(CreateView):
     form_class = InstructionForm
     template_name = 'instruction_form.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.recipe = get_object_or_404(Recipe, pk=kwargs['recipe_id'])
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        recipe = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
-        form.instance.recipe = recipe
+        form.instance.recipe = self.recipe
         if not form.instance.step_number:
-            form.instance.step_number = recipe.instructions.count() + 1
+            form.instance.step_number = self.recipe.instructions.count() + 1
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['recipe'] = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
+        context['recipe'] = self.recipe
         return context
 
     def get_success_url(self):
-        return reverse('recipe_detail', kwargs={'pk': self.kwargs['recipe_id']})
-
-from django.shortcuts import get_object_or_404
-from django.urls import reverse
+        return reverse('recipe_detail', kwargs={'pk': self.recipe.pk})
 
 class InstructionUpdateView(UpdateView):
     model = Instruction
@@ -221,8 +225,6 @@ class InstructionDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse('recipe_detail', kwargs={'pk': self.object.recipe.pk})
-
-
 
 # Authentication/Authorization
 

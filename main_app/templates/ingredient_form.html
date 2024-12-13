@@ -1,8 +1,8 @@
-{% extends 'base.html' %} {% block title %}Add Ingredient{% endblock %} {% block content %}
-<h1>Add Ingredient</h1>
+{% extends 'base.html' %} {% block title %}{{ object|default:"Add"}} Ingredient{% endblock %} {% block content %}
+<h1>{% if object %}Edit{% else %}Add{% endif %} Ingredient</h1>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit" class="btn">Save</button>
+  <button type="submit" class="btn">{% if object %}Save{% else %}Add{% endif %} Ingredient</button>
 </form>
 <a href="{% url 'recipe_detail' recipe.pk %}">Back to Recipe</a>
 {% endblock %}
