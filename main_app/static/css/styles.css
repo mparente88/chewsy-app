@@ -237,3 +237,7 @@ label {
 .instruction-item.sortable-ghost {
   opacity: 0.4;
 }
+
+header nav a {
+  color: white !important;
+}

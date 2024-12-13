@@ -1,6 +1,7 @@
 from django.db import models
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
@@ -116,6 +117,41 @@ class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         recipe = self.get_object()
         return recipe.user == self.request.user
+    
+class DuplicateRecipeView(View):
+    def post(self, request, pk, *args, **kwargs):
+        original_recipe = get_object_or_404(Recipe, pk=pk, user=request.user)
+
+        duplicated_recipe = Recipe.objects.create(
+            title=f"Copy of {original_recipe.title}",
+            description=original_recipe.description,
+            user=request.user,
+            prep_time=original_recipe.prep_time,
+            cook_time=original_recipe.cook_time,
+            servings=original_recipe.servings,
+            image=original_recipe.image,
+        )
+
+        duplicated_recipe.tags.set(original_recipe.tags.all())
+
+        for ingredient in original_recipe.ingredients.all():
+            Ingredient.objects.create(
+                recipe=duplicated_recipe,
+                name=ingredient.name,
+                quantity=ingredient.quantity,
+                measurement=ingredient.measurement,
+                order=ingredient.order,
+            )
+
+        for instruction in original_recipe.instructions.all():
+            Instruction.objects.create(
+                recipe=duplicated_recipe,
+                step_number=instruction.step_number,
+                description=instruction.description,
+                time_minutes=instruction.time_minutes,
+            )
+        messages.success(request, "Recipe duplicated successfully!")
+        return redirect('recipe_detail', pk=duplicated_recipe.pk)
     
 # Ingredients
 

@@ -5,7 +5,7 @@ from .views import (
     IngredientCreateView, IngredientUpdateView, IngredientDeleteView,
     TagListView, SignUpView, InstructionCreateView, InstructionDeleteView, 
     InstructionUpdateView, AllRecipesListView, MyRecipesListView,
-    InstructionReorderView
+    InstructionReorderView, DuplicateRecipeView
 )
 
 urlpatterns = [
@@ -27,4 +27,5 @@ urlpatterns = [
     path('instruction/<int:pk>/edit/', InstructionUpdateView.as_view(), name='instruction_update'),
     path('instruction/<int:pk>/delete/', InstructionDeleteView.as_view(), name='instruction_delete'),
     path('recipe/<int:recipe_id>/instructions/reorder/', InstructionReorderView.as_view(), name='instructions_reorder'),
+    path('recipe/<int:pk>/duplicate/', DuplicateRecipeView.as_view(), name='recipe_duplicate'),
 ]
