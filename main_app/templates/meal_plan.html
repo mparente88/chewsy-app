@@ -1,32 +1,42 @@
 {% extends 'base.html' %} {% block title %}My Meal Plan{% endblock %} {% block content %}
 <h1>My Meal Plan</h1>
 
+<div class="meal-plan-navigation">
+  <a href="{% url 'meal_plan' week_offset=week_offset|add:'-1' %}" class="btn btn-prev">Previous Week</a>
+  <span class="current-week"> {{ week_start|date:"M j, Y" }} - {{ week_end|date:"M j, Y" }} </span>
+  <a href="{% url 'meal_plan' week_offset=week_offset|add:'1' %}" class="btn btn-next">Next Week</a>
+</div>
+
 <table class="meal-plan-table">
-  <thead>
-    <tr>
-      <th>Meal Type / Day</th>
-      {% for day in days %}
-      <th>{{ day|date:"D, M j" }}</th>
+  <table class="meal-plan-table">
+    <thead>
+      <tr>
+        <th>Meal Type / Day</th>
+        {% for day in days %}
+        <th>{{ day|date:"D, M j" }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for meal_type, day_meals in table_rows %}
+      <tr>
+        <td data-label="Meal Type">{{ meal_type|capfirst }}</td>
+        {% for day, meal in day_meals %}
+        <td data-label="{{ day|date:'D, M j' }}">
+          {% if meal %}
+          <p>{% if meal.recipe %}{{ meal.recipe.title }}{% else %}No Recipe{% endif %}</p>
+          <div class="meal-actions">
+            <a class="btn btn-edit" href="{% url 'edit_meal' meal.id %}">Edit</a>
+            <a class="btn btn-remove" href="{% url 'delete_meal' meal.id %}">Remove</a>
+          </div>
+          {% else %}
+          <a class="btn" href="{% url 'add_meal' meal_plan.id day meal_type %}">Add Meal</a>
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
       {% endfor %}
-    </tr>
-  </thead>
-  <tbody>
-    {% for meal_type, day_meals in table_rows %}
-    <tr>
-      <td>{{ meal_type|capfirst }}</td>
-      {% for day, meal in day_meals %}
-      <td>
-        {% if meal %}
-        <p>{% if meal.recipe %}{{ meal.recipe.title }}{% else %}No Recipe{% endif %}</p>
-        <a href="{% url 'edit_meal' meal.id %}">Edit</a> |
-        <a href="{% url 'delete_meal' meal.id %}">Remove</a>
-        {% else %}
-        <a href="{% url 'add_meal' meal_plan.id day meal_type %}">Add Meal</a>
-        {% endif %}
-      </td>
-      {% endfor %}
-    </tr>
-    {% endfor %}
-  </tbody>
+    </tbody>
+  </table>
+  {% endblock %}
 </table>
-{% endblock %}

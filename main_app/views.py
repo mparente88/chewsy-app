@@ -359,16 +359,17 @@ class MyCookbookListView(ListView):
 # Meals and Meal Plans
 
 class MealPlanView(LoginRequiredMixin, View):
-    def get(self, request):
+    def get(self, request, week_offset=0):
         today = date.today()
-        start_of_week = today - timedelta(days=today.weekday())
+        start_of_week = today - timedelta(days=today.weekday()) + timedelta(weeks=week_offset)
+        end_of_week = start_of_week + timedelta(days=6)
+
         meal_plan, created = MealPlan.objects.get_or_create(user=request.user, start_date=start_of_week)
 
         days = [start_of_week + timedelta(days=i) for i in range(7)]
         meal_types = ['breakfast', 'lunch', 'dinner', 'snack']
 
         meals = meal_plan.meals.all()
-
         meals_by_day = {d: {mt: None for mt in meal_types} for d in days}
         for meal in meals:
             meals_by_day[meal.date][meal.meal_type] = meal
@@ -385,9 +386,13 @@ class MealPlanView(LoginRequiredMixin, View):
             'days': days,
             'meal_types': meal_types,
             'table_rows': table_rows,
+            'week_offset': week_offset,
+            'week_start': start_of_week,
+            'week_end': end_of_week,
         }
 
         return render(request, 'meal_plan.html', context)
+
     
 class AddMealView(LoginRequiredMixin, View):
     def get(self, request, meal_plan_id, day, meal_type):

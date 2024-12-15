@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, register_converter
 from django.contrib.auth import views as auth_views
 from . import views
 from .views import (
@@ -9,6 +9,21 @@ from .views import (
     InstructionReorderView, DuplicateRecipeView, add_to_cookbook, MyCookbookListView,
     shuffle_recipes, HomeView, MealPlanView, AddMealView, EditMealView, DeleteMealView
 )
+
+# ChatGPT helped me with this converter part
+# when I asked how to view meal plans
+# in the past with the system that I had
+
+class SignedIntConverter:
+    regex = r'-?\d+'
+
+    def to_python(self, value):
+        return int(value)
+    
+    def to_url(self, value):
+        return str(value)
+    
+register_converter(SignedIntConverter, 'signed_int')
 
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
@@ -33,7 +48,8 @@ urlpatterns = [
     path('recipe/<int:pk>/cookbook/', add_to_cookbook, name='add_to_cookbook'),
     path('my-cookbook/', MyCookbookListView.as_view(), name='my_cookbook'),
     path('shuffle-recipes/', views.shuffle_recipes, name='shuffle_recipes'),
-    path('meal-plan/', MealPlanView.as_view(), name='meal_plan'),
+    path('meal-plan/<signed_int:week_offset>/', MealPlanView.as_view(), name='meal_plan'),
+    path('meal-plan/', MealPlanView.as_view(), {'week_offset': 0}, name='meal_plan'),
     path('meal-plan/<int:meal_plan_id>/add-meal/<slug:day>/<slug:meal_type>/', AddMealView.as_view(), name='add_meal'),
     path('meal-plan/edit-meal/<int:meal_id>/', EditMealView.as_view(), name='edit_meal'),
     path('meal-plan/delete-meal/<int:pk>/', DeleteMealView.as_view(), name='delete_meal'),
