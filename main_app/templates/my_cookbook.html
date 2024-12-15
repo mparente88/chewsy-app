@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block title %}My Cookbook{% endblock %} {% block content %}
+<h1>My Cookbook</h1>
+<div class="recipe-grid">
+  {% for recipe in recipes %}
+  <div class="recipe-card">
+    <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
+    <div class="recipe-info">
+      <h2><a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a></h2>
+      <p>Prep: {{ recipe.prep_time }} mins | Cook: {{ recipe.cook_time }} mins</p>
+    </div>
+  </div>
+  {% empty %}
+  <p>Your cookbook is empty. Start adding recipes!</p>
+  {% endfor %}
+</div>
+{% endblock %}
