@@ -22,6 +22,9 @@ class Recipe(models.Model):
     
     def total_cookbooks(self):
         return self.cookbooks.count()
+    
+    def __str__(self):
+        return self.title
 
 class Ingredient(models.Model):
     MEASUREMENT_CHOICES = [

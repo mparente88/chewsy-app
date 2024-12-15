@@ -365,7 +365,6 @@ class MealPlanView(LoginRequiredMixin, View):
         meal_plan, created = MealPlan.objects.get_or_create(user=request.user, start_date=start_of_week)
 
         days = [start_of_week + timedelta(days=i) for i in range(7)]
-
         meal_types = ['breakfast', 'lunch', 'dinner', 'snack']
 
         meals = meal_plan.meals.all()
@@ -373,12 +372,19 @@ class MealPlanView(LoginRequiredMixin, View):
         meals_by_day = {d: {mt: None for mt in meal_types} for d in days}
         for meal in meals:
             meals_by_day[meal.date][meal.meal_type] = meal
-        
+
+        table_rows = []
+        for mt in meal_types:
+            row = []
+            for d in days:
+                row.append((d, meals_by_day[d][mt]))
+            table_rows.append((mt, row))
+
         context = {
             'meal_plan': meal_plan,
             'days': days,
             'meal_types': meal_types,
-            'meals_by_day': meals_by_day,
+            'table_rows': table_rows,
         }
 
         return render(request, 'meal_plan.html', context)
@@ -414,11 +420,12 @@ class EditMealView(LoginRequiredMixin, View):
             return redirect('meal_plan')
         return render(request, 'edit_meal.html', {'form': form, 'meal': meal})
 
-class DeleteMealView(LoginRequiredMixin, View):
-    def post(self, request, meal_id):
-        meal = get_object_or_404(Meal, pk=meal_id, meal_plan__user=request.user)
-        meal.delete()
-        return redirect('meal_plan')
+class DeleteMealView(LoginRequiredMixin, DeleteView):
+    model = Meal
+    template_name = 'confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy('meal_plan')
 
 # Authentication/Authorization
 
