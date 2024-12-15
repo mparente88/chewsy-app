@@ -309,3 +309,71 @@ header nav a:active {
     grid-template-columns: 1fr;
   }
 }
+
+.featured-recipe {
+  margin-bottom: 20px;
+}
+
+.featured-recipe h3 {
+  font-size: 1.25rem;
+  color: #1a73e8;
+  margin-bottom: 10px;
+}
+
+.featured-recipe {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.featured-recipe h3 {
+  font-size: 1.5rem;
+  color: #1a73e8;
+  margin-bottom: 10px;
+}
+
+.featured-recipe .recipe-card {
+  border: 2px solid #ff9800;
+  padding: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.featured-recipe .recipe-card img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.featured-recipe .recipe-info h3 a {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #ff9800;
+}
+
+.shuffle-btn {
+  background-color: #ff9800;
+  color: white;
+  margin-top: 15px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+}
+
+.shuffle-btn:hover {
+  background-color: #e67e22;
+}
+
+@media (max-width: 768px) {
+  .featured-recipe {
+    margin-bottom: 20px;
+  }
+
+  .featured-recipe h3 {
+    font-size: 1.25rem;
+  }
+
+  .shuffle-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}

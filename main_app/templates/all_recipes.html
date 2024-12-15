@@ -1,7 +1,24 @@
 {% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %} {% if user.is_authenticated %}
 <section class="my-cookbook">
   <h2>What's for dinner tonight?</h2>
-  {% if my_cookbook %}
+
+  {% if my_cookbook %} {% if random_recipe %}
+  <div class="featured-recipe">
+    <h3>Featured Recipe</h3>
+    <div class="recipe-card featured">
+      <img src="{% if random_recipe.image %}{{ random_recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ random_recipe.title }}" />
+      <div class="recipe-info">
+        <h3><a href="{% url 'recipe_detail' random_recipe.pk %}">{{ random_recipe.title }}</a></h3>
+        <p>Prep: {{ random_recipe.prep_time }} mins | Cook: {{ random_recipe.cook_time }} mins</p>
+      </div>
+    </div>
+    <form method="post" action="{% url 'all_recipes' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn shuffle-btn">Shuffle</button>
+    </form>
+  </div>
+  {% endif %}
+
   <div class="recipe-grid">
     {% for recipe in my_cookbook %}
     <div class="recipe-card">
@@ -51,4 +68,5 @@
   <p>No recipes found. Try selecting different tags.</p>
   {% endfor %}
 </div>
+
 {% endblock %}
