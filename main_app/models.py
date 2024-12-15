@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import datetime
 
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
@@ -133,3 +134,26 @@ class UserCookbook(models.Model):
 def create_user_cookbook(sender, instance, created, **kwargs):
     if created:
         UserCookbook.objects.create(user=instance)
+
+class MealPlan(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    start_date = models.DateField(default=datetime.date.today)
+
+    def __str__(self):
+        return f"{self.user.username}'s Meal Plan starting {self.start_date}"
+    
+class Meal(models.Model):
+    MEAL_TYPE_CHOICES = [
+        ('breakfast', 'Breakfast'),
+        ('lunch', 'Lunch'),
+        ('dinner', 'Dinner'),
+        ('snack', 'Snack'),
+    ]
+    meal_plan = models.ForeignKey(MealPlan, on_delete=models.CASCADE, related_name='meals')
+    recipe = models.ForeignKey('Recipe', on_delete=models.SET_NULL, null=True, blank=True)
+    date = models.DateField()
+    meal_type = models.CharField(max_length=20, choices=MEAL_TYPE_CHOICES)
+    servings = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.meal_type.capitalize()} on {self.date} - {self.recipe.title if self.recipe else 'No Recipe'}"
