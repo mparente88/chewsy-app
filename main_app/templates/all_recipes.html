@@ -1,8 +1,6 @@
 {% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %}
 <h1>All Recipes</h1>
 
-<button id="filter-toggle" class="btn" aria-expanded="false" aria-controls="filter-container">Filter Recipes <span id="filter-icon">&#9660;</span></button>
-
 <div id="filter-container" class="tag-filter">
   <form method="get" action="">
     {% for category, tags in tag_categories.items %}
@@ -38,13 +36,21 @@
   {% if is_paginated %}
   <ul>
     {% if page_obj.has_previous %}
-    <li><a href="?page=1">First</a></li>
-    <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+    <li>
+      <a href="?page=1{% for tag in selected_tags %}&tags={{ tag }}{% endfor %}">First</a>
+    </li>
+    <li>
+      <a href="?page={{ page_obj.previous_page_number }}{% for tag in selected_tags %}&tags={{ tag }}{% endfor %}">Previous</a>
+    </li>
     {% endif %}
     <li>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</li>
     {% if page_obj.has_next %}
-    <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
-    <li><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+    <li>
+      <a href="?page={{ page_obj.next_page_number }}{% for tag in selected_tags %}&tags={{ tag }}{% endfor %}">Next</a>
+    </li>
+    <li>
+      <a href="?page={{ page_obj.paginator.num_pages }}{% for tag in selected_tags %}&tags={{ tag }}{% endfor %}">Last</a>
+    </li>
     {% endif %}
   </ul>
   {% endif %}
