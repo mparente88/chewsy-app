@@ -1,0 +1,7 @@
+{% extends 'base.html' %} {% block title %}Edit Meal{% endblock %} {% block content %}
+<h1>Edit Meal for {{ meal.date }} ({{ meal.meal_type|capfirst }})</h1>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit" class="btn">Save</button>
+</form>
+{% endblock %}
