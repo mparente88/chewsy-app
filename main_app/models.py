@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
@@ -119,3 +121,11 @@ class Instruction(models.Model):
 
     def __str__(self):
         return f"Step {self.step_number}: {self.description[:50]}"
+    
+class UserCookbook(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cookbook')
+    recipes = models.ManyToManyField(Recipe, related_name='cookbooks')
+
+def create_user_cookbook(sender, instance, created, **kwargs):
+    if created:
+        UserCookbook.objects.create(user=instance)
