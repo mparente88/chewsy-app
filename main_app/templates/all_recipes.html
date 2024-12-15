@@ -1,23 +1,18 @@
-{% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %} {% if user.is_authenticated %}
-<section class="my-cookbook">
-  <h2>What's for dinner tonight?</h2>
-  {% if my_cookbook %} {% if random_recipe %}
-  <div class="featured-recipe">
-    <h3>Featured Recipe</h3>
-    <div class="recipe-card featured">
-      <img src="{% if random_recipe.image %}{{ random_recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ random_recipe.title }}" />
-      <div class="recipe-info">
-        <h3><a href="{% url 'recipe_detail' random_recipe.pk %}">{{ random_recipe.title }}</a></h3>
-        <p>Prep: {{ random_recipe.prep_time }} mins | Cook: {{ random_recipe.cook_time }} mins</p>
-      </div>
+{% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %}
+
+<h1>All Recipes</h1>
+<div class="recipe-grid">
+  {% for recipe in recipes %}
+  <div class="recipe-card">
+    <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
+    <div class="recipe-info">
+      <h2><a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a></h2>
+      <p>Prep: {{ recipe.prep_time }} mins | Cook: {{ recipe.cook_time }} mins</p>
     </div>
-    <button class="btn shuffle-btn" id="shuffle-featured-btn">Shuffle</button>
   </div>
-  {% else %}
-  <p>No featured recipe available. Add recipes to your cookbook.</p>
-  {% endif %} {% else %}
-  <p>Your cookbook is empty. Start adding recipes!</p>
-  {% endif %} {% else %}
-  <p>Please <a href="{% url 'login' %}">log in</a> to see your featured recipe.</p>
-  {% endif %} {% endblock %}
-</section>
+  {% empty %}
+  <p>No recipes found.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}
