@@ -333,39 +333,60 @@ label {
   background-color: #e67e22;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 10px;
-  }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  padding: 20px 0;
+  gap: 12px;
+}
 
-  header nav a {
-    display: inline-block;
-    margin: 0 10px;
-    font-size: 0.9rem;
-  }
+.pagination ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-  header h1 img {
-    height: 120px;
-  }
+.pagination ul li {
+  margin: 0 5px;
+}
 
-  header h1 a {
-    font-size: 1.5rem;
-  }
+.pagination ul li a {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #1a73e8;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
 
-  .recipe-grid {
-    grid-template-columns: 1fr;
-  }
+.pagination ul li a:hover {
+  background-color: #155ab2;
+}
 
-  fieldset {
-    grid-template-columns: 1fr;
-  }
+.pagination ul li span {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  color: #555;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  white-space: nowrap;
+}
 
-  .shuffle-btn {
-    font-size: 0.9rem;
-    padding: 8px 16px;
-  }
+.pagination ul li.disabled a {
+  pointer-events: none;
+  background-color: #ddd;
+  color: #888;
+}
 
-  .featured-recipe h3 {
-    font-size: 1.25rem;
+@media (max-width: 480px) {
+  .pagination ul li span {
+    font-size: 0.8rem;
+    padding: 8px 12px;
   }
 }

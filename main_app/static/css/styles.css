@@ -56,7 +56,11 @@ header h1 a {
 
 header .tagline {
   font-size: 1rem;
-  margin: 10px 0 0;
+  margin: 10px 0;
+}
+
+header nav {
+  margin-top: 15px;
 }
 
 header nav a {
@@ -333,39 +337,59 @@ label {
   background-color: #e67e22;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 10px;
-  }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  padding: 20px 0;
+  gap: 12px;
+}
 
-  header nav a {
-    display: inline-block;
-    margin: 0 10px;
-    font-size: 0.9rem;
-  }
+.pagination ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-  header h1 img {
-    height: 120px;
-  }
+.pagination ul li {
+  margin: 0 5px;
+}
 
-  header h1 a {
-    font-size: 1.5rem;
-  }
+.pagination ul li a {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #1a73e8;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
 
-  .recipe-grid {
-    grid-template-columns: 1fr;
-  }
+.pagination ul li a:hover {
+  background-color: #155ab2;
+}
 
-  fieldset {
-    grid-template-columns: 1fr;
-  }
+.pagination ul li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
 
-  .shuffle-btn {
-    font-size: 0.9rem;
-    padding: 8px 16px;
-  }
+.pagination ul li.disabled a {
+  pointer-events: none;
+}
 
-  .featured-recipe h3 {
-    font-size: 1.25rem;
+@media (max-width: 480px) {
+  .pagination ul li {
+    font-size: 0.8rem;
+    padding: 1px 3px;
   }
 }

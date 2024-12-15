@@ -14,7 +14,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('signup/', SignUpView.as_view(), name='signup'),
-    path('', HomeView.as_view(), name='recipe_list'),
+    path('', HomeView.as_view(), name='home'),
     path('my-recipes/', MyRecipesListView.as_view(), name='my_recipes'),
     path('all-recipes/', AllRecipesListView.as_view(), name='all_recipes'),
     path('recipe/<int:pk>/', RecipeDetailView.as_view(), name='recipe_detail'),

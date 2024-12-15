@@ -19,13 +19,14 @@
     <header>
       <div class="container">
         <h1>
-          <a href="{% url 'recipe_list' %}">
+          <a href="{% url 'home' %}">
             <img src="{% static 'images/chewsy_logo.png' %}" alt="Chewsy Logo" class="logo" />
           </a>
         </h1>
         <p class="tagline">Beggars Can't Be Chewsers</p>
         <nav>
           {% if user.is_authenticated %}
+          <a href="{% url 'home' %}">Home</a>
           <a href="{% url 'my_recipes' %}">My Recipes</a>
           <a href="{% url 'my_cookbook' %}">My Cookbook</a>
           <a href="{% url 'all_recipes' %}">All Recipes</a>

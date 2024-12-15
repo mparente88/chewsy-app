@@ -1,9 +1,8 @@
 {% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content %} {% if user.is_authenticated %}
 <section class="my-cookbook">
-  <h2>What's for dinner tonight?</h2>
   {% if my_cookbook %} {% if random_recipe %}
   <div class="featured-recipe">
-    <h3>Featured Recipe</h3>
+    <h3>What's for dinner tonight?</h3>
     <div class="recipe-card featured">
       <img src="{% if random_recipe.image %}{{ random_recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ random_recipe.title }}" />
       <div class="recipe-info">
@@ -11,7 +10,7 @@
         <p>Prep: {{ random_recipe.prep_time }} mins | Cook: {{ random_recipe.cook_time }} mins</p>
       </div>
     </div>
-    <button class="btn shuffle-btn" id="shuffle-featured-btn">Shuffle</button>
+    <button class="btn shuffle-btn" id="shuffle-featured-btn">Not Tonight</button>
   </div>
   {% else %}
   <p>No featured recipe available. Add recipes to your cookbook.</p>
