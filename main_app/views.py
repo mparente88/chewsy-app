@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Recipe, Ingredient, Tag, Instruction, UserCookbook
 from .forms import RecipeForm, IngredientForm, InstructionForm
+import random
 
 # Recipes
 
@@ -45,20 +46,20 @@ class MyRecipesListView(LoginRequiredMixin, ListView):
         }
         return context
 
-
 class AllRecipesListView(ListView):
     model = Recipe
     template_name = 'all_recipes.html'
     context_object_name = 'recipes'
+    paginate_by = 10
 
     def get_queryset(self):
-        queryset = Recipe.objects.all()
+        queryset = Recipe.objects.all().order_by('-created_at')
 
         tag_ids = self.request.GET.getlist('tags')
         if tag_ids:
             queryset = (
                 queryset.filter(tags__id__in=tag_ids)
-                .annotate(tag_count=models.Count('tags'))
+                .annotate(tag_count=Count('tags'))
                 .filter(tag_count=len(tag_ids))
             )
 
@@ -66,12 +67,23 @@ class AllRecipesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['tags'] = Tag.objects.all()
-        context['selected_tags'] = [int(tag) for tag in self.request.GET.getlist('tags') if tag.isdigit()]
+        context['selected_tags'] = [
+            int(tag) for tag in self.request.GET.getlist('tags') if tag.isdigit()
+        ]
         context['tag_categories'] = {
             category: Tag.objects.filter(category=category)
             for category, _ in Tag.TAG_CATEGORY_CHOICES
         }
+
+        if self.request.user.is_authenticated:
+            cookbook, created = UserCookbook.objects.get_or_create(user=self.request.user)
+            cookbook_recipes = cookbook.recipes.all()
+            context['my_cookbook'] = cookbook_recipes
+            if cookbook_recipes.exists():
+                context['random_recipe'] = random.choice(list(cookbook_recipes))
+
         return context
     
 class RecipeDetailView(LoginRequiredMixin, DetailView):

@@ -42,17 +42,8 @@ header {
   text-align: center;
 }
 
-header h1 {
-  margin: 0;
-}
-
 header h1 a {
-  display: inline-block;
-}
-
-header h1 img.logo {
-  max-height: 100px;
-  vertical-align: middle;
+  color: white;
 }
 
 header .tagline {
@@ -178,6 +169,22 @@ footer {
   padding: 6px 10px;
   font-size: 0.8rem;
   margin-top: 10px;
+}
+
+.my-cookbook {
+  margin-bottom: 40px;
+}
+
+.my-cookbook h2 {
+  font-size: 1.5rem;
+  color: #1a73e8;
+  margin-bottom: 20px;
+}
+
+.my-cookbook .recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
 
 @media (min-width: 768px) {

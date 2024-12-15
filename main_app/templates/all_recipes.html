@@ -1,7 +1,25 @@
-{% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %}
-<h1>All Recipes</h1>
+{% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %} {% if user.is_authenticated %}
+<section class="my-cookbook">
+  <h2>What's for dinner tonight?</h2>
+  {% if my_cookbook %}
+  <div class="recipe-grid">
+    {% for recipe in my_cookbook %}
+    <div class="recipe-card">
+      <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
+      <div class="recipe-info">
+        <h3><a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a></h3>
+        <p>Prep: {{ recipe.prep_time }} mins | Cook: {{ recipe.cook_time }} mins</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>Your cookbook is empty. Start adding recipes!</p>
+  {% endif %}
+</section>
+{% endif %}
 
-<button id="filter-toggle" class="btn" aria-expanded="false" aria-controls="filter-container">Filter Recipes <span id="filter-icon">&#9660;</span></button>
+<button id="filter-toggle" class="btn">Filter Recipes <span id="filter-icon">&#9660;</span></button>
 
 <div id="filter-container" class="tag-filter">
   <form method="get" action="">
