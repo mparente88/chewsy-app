@@ -33,16 +33,22 @@
   <p>No recipes found. Try selecting different tags.</p>
   {% endfor %}
 </div>
+
+<div class="pagination">
+  {% if is_paginated %}
+  <ul>
+    {% if page_obj.has_previous %}
+    <li><a href="?page=1">First</a></li>
+    <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+    {% endif %}
+    <li>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</li>
+    {% if page_obj.has_next %}
+    <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+    <li><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+    {% endif %}
+  </ul>
+  {% endif %}
+</div>
+
 <a href="{% url 'recipe_create' %}" class="btn">Add New Recipe</a>
 {% endblock %}
-
-<script>
-  document.getElementById("filter-toggle").addEventListener("click", function () {
-    const filterContainer = document.getElementById("filter-container")
-    if (filterContainer.style.display === "none") {
-      filterContainer.style.display = "block"
-    } else {
-      filterContainer.style.display = "none"
-    }
-  })
-</script>

@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseRedirect
 from django.db import models
 from django.db.models import Count
 from django.views import View
@@ -37,6 +37,7 @@ class MyRecipesListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = 'my_recipes.html'
     context_object_name = 'recipes'
+    paginate_by = 12
 
     def get_queryset(self):
         queryset = Recipe.objects.filter(user=self.request.user)
@@ -61,13 +62,11 @@ class MyRecipesListView(LoginRequiredMixin, ListView):
         }
         return context
 
-from django.http import HttpResponseRedirect
-
 class AllRecipesListView(ListView):
     model = Recipe
     template_name = 'all_recipes.html'
     context_object_name = 'recipes'
-    paginate_by = 10
+    paginate_by = 12
 
     def get_queryset(self):
         queryset = Recipe.objects.all().order_by('-created_at')
