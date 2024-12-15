@@ -288,7 +288,7 @@ class InstructionReorderView(LoginRequiredMixin, View):
 @login_required
 def add_to_cookbook(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
-    cookbook = request.user.cookbook
+    cookbook, created = UserCookbook.objects.get_or_create(user=request.user)
     if recipe in cookbook.recipes.all():
         cookbook.recipes.remove(recipe)
     else:
@@ -301,7 +301,8 @@ class MyCookbookListView(ListView):
     context_object_name = 'recipes'
 
     def get_queryset(self):
-        return self.request.user.cookbook.recipes.all()
+        cookbook, created = UserCookbook.objects.get_or_create(user=self.request.user)
+        return cookbook.recipes.all()
 
 # Authentication/Authorization
 
