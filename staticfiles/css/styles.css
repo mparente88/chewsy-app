@@ -31,15 +31,32 @@ header {
   color: white;
   padding: 20px 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+header h1 img {
+  height: 180px;
+  width: auto;
+  object-fit: contain;
 }
 
 header h1 a {
   color: white;
+  font-size: 2rem;
 }
 
 header .tagline {
   font-size: 1rem;
-  margin: 0;
+  margin: 10px 0 0;
 }
 
 header nav a {
@@ -193,7 +210,7 @@ footer {
   gap: 20px;
 }
 
-.fieldset {
+fieldset {
   border: none;
   margin-bottom: 20px;
   display: grid;
@@ -325,6 +342,14 @@ label {
     display: inline-block;
     margin: 0 10px;
     font-size: 0.9rem;
+  }
+
+  header h1 img {
+    height: 120px;
+  }
+
+  header h1 a {
+    font-size: 1.5rem;
   }
 
   .recipe-grid {

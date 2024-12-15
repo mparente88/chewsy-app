@@ -1,25 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const shuffleButton = document.querySelector(".shuffle-btn")
-  const recipeGrid = document.querySelector(".recipe-grid")
+  const shuffleButton = document.getElementById("shuffle-featured-btn")
+  const featuredRecipeContainer = document.querySelector(".featured-recipe .recipe-card.featured")
 
-  if (shuffleButton && recipeGrid) {
+  if (shuffleButton && featuredRecipeContainer) {
     shuffleButton.addEventListener("click", function () {
       fetch("/shuffle-recipes/")
         .then((response) => response.json())
         .then((data) => {
-          recipeGrid.innerHTML = ""
-          data.recipes.forEach((recipe) => {
-            const recipeCard = `
-                <div class="recipe-card">
-                  <img src="${recipe.image}" alt="${recipe.title}" />
-                  <div class="recipe-info">
-                    <h2><a href="/recipe/${recipe.id}/">${recipe.title}</a></h2>
-                    <p>Prep: ${recipe.prep_time} mins | Cook: ${recipe.cook_time} mins</p>
-                  </div>
-                </div>
-              `
-            recipeGrid.insertAdjacentHTML("beforeend", recipeCard)
-          })
+          const recipe = data.recipe
+          if (recipe) {
+            const img = featuredRecipeContainer.querySelector("img")
+            const titleLink = featuredRecipeContainer.querySelector(".recipe-info h3 a")
+            const infoPara = featuredRecipeContainer.querySelector(".recipe-info p")
+
+            img.src = recipe.image
+            img.alt = recipe.title
+            titleLink.href = `/recipe/${recipe.id}/`
+            titleLink.textContent = recipe.title
+            infoPara.textContent = `Prep: ${recipe.prep_time} mins | Cook: ${recipe.cook_time} mins`
+          } else {
+            featuredRecipeContainer.innerHTML = `<p>No featured recipe available. Add recipes to your cookbook.</p>`
+          }
         })
         .catch((error) => console.error("Error:", error))
     })

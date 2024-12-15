@@ -166,19 +166,22 @@ class DuplicateRecipeView(View):
         messages.success(request, "Recipe duplicated successfully!")
         return redirect('recipe_detail', pk=duplicated_recipe.pk)
     
+@login_required
 def shuffle_recipes(request):
-    recipes = list(Recipe.objects.annotate(favorite_count=Count('favorited_by')).order_by('?')[:10])
-    recipe_data = [
-        {
-            'id': recipe.id,
-            'title': recipe.title,
-            'prep_time': recipe.prep_time,
-            'cook_time': recipe.cook_time,
-            'image': recipe.image.url if recipe.image else '/static/images/placeholder.jpg',
+    cookbook = request.user.cookbook
+    cookbook_recipes = list(cookbook.recipes.all())
+    if cookbook_recipes:
+        random_recipe = random.choice(cookbook_recipes)
+        recipe_data = {
+            'id': random_recipe.id,
+            'title': random_recipe.title,
+            'prep_time': random_recipe.prep_time,
+            'cook_time': random_recipe.cook_time,
+            'image': random_recipe.image.url if random_recipe.image else '/static/images/placeholder.jpg',
         }
-        for recipe in recipes
-    ]
-    return JsonResponse({'recipes': recipe_data})
+        return JsonResponse({'recipe': recipe_data})
+    else:
+        return JsonResponse({'recipe': None})
 
 # Ingredients
 

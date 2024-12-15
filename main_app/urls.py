@@ -1,11 +1,13 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from . import views
 from .views import (
     RecipeDetailView, RecipeCreateView, RecipeUpdateView, RecipeDeleteView,
     IngredientCreateView, IngredientUpdateView, IngredientDeleteView,
     TagListView, SignUpView, InstructionCreateView, InstructionDeleteView, 
     InstructionUpdateView, AllRecipesListView, MyRecipesListView,
-    InstructionReorderView, DuplicateRecipeView, add_to_cookbook, MyCookbookListView
+    InstructionReorderView, DuplicateRecipeView, add_to_cookbook, MyCookbookListView,
+    shuffle_recipes
 )
 
 urlpatterns = [
