@@ -1,5 +1,6 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.db import models
+from django.db.models import Count
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
@@ -165,6 +166,20 @@ class DuplicateRecipeView(View):
         messages.success(request, "Recipe duplicated successfully!")
         return redirect('recipe_detail', pk=duplicated_recipe.pk)
     
+def shuffle_recipes(request):
+    recipes = list(Recipe.objects.annotate(favorite_count=Count('favorited_by')).order_by('?')[:10])
+    recipe_data = [
+        {
+            'id': recipe.id,
+            'title': recipe.title,
+            'prep_time': recipe.prep_time,
+            'cook_time': recipe.cook_time,
+            'image': recipe.image.url if recipe.image else '/static/images/placeholder.jpg',
+        }
+        for recipe in recipes
+    ]
+    return JsonResponse({'recipes': recipe_data})
+
 # Ingredients
 
 class IngredientCreateView(CreateView):

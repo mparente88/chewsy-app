@@ -30,4 +30,5 @@ urlpatterns = [
     path('recipe/<int:pk>/duplicate/', DuplicateRecipeView.as_view(), name='recipe_duplicate'),
     path('recipe/<int:pk>/cookbook/', add_to_cookbook, name='add_to_cookbook'),
     path('my-cookbook/', MyCookbookListView.as_view(), name='my_cookbook'),
+    path('shuffle-recipes/', views.shuffle_recipes, name='shuffle_recipes'),
 ]
