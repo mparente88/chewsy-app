@@ -7,7 +7,7 @@ from .views import (
     TagListView, SignUpView, InstructionCreateView, InstructionDeleteView, 
     InstructionUpdateView, AllRecipesListView, MyRecipesListView,
     InstructionReorderView, DuplicateRecipeView, add_to_cookbook, MyCookbookListView,
-    shuffle_recipes, HomeView
+    shuffle_recipes, HomeView, MealPlanView, AddMealView, EditMealView, DeleteMealView
 )
 
 urlpatterns = [
@@ -33,4 +33,8 @@ urlpatterns = [
     path('recipe/<int:pk>/cookbook/', add_to_cookbook, name='add_to_cookbook'),
     path('my-cookbook/', MyCookbookListView.as_view(), name='my_cookbook'),
     path('shuffle-recipes/', views.shuffle_recipes, name='shuffle_recipes'),
+    path('meal-plan/', MealPlanView.as_view(), name='meal_plan'),
+    path('meal-plan/<int:meal_plan_id>/add-meal/<slug:day>/<slug:meal_type>/', AddMealView.as_view(), name='add_meal'),
+    path('meal-plan/edit-meal/<int:meal_id>/', EditMealView.as_view(), name='edit_meal'),
+    path('meal-plan/delete-meal/<int:meal_id>/', DeleteMealView.as_view(), name='delete_meal'),
 ]
