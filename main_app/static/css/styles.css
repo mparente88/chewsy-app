@@ -72,7 +72,7 @@ header nav a,
 header nav a:visited,
 header nav a:hover,
 header nav a:active {
-  color: white !important;
+  color: white;
 }
 
 .recipe-grid {
@@ -478,4 +478,66 @@ label {
     padding: 6px 10px;
     font-size: 0.85rem;
   }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background-color: #1a73e8;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+  background-color: #155ab2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  color: #333;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 10px 0;
+  z-index: 10;
+  min-width: 180px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #333 !important;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f7f8fa;
+  color: #1a73e8 !important;
+  border-radius: 4px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.dropdown-menu a:not(:last-child) {
+  border-bottom: 1px solid #eaeaea;
 }
