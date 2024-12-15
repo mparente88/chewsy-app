@@ -5,8 +5,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Recipe, Ingredient, Tag, Instruction
+from .models import Recipe, Ingredient, Tag, Instruction, UserCookbook
 from .forms import RecipeForm, IngredientForm, InstructionForm
 
 # Recipes
@@ -281,6 +282,26 @@ class InstructionReorderView(LoginRequiredMixin, View):
             instruction.save()
 
         return redirect('recipe_detail', pk=recipe.pk)
+    
+# Cookbook
+
+@login_required
+def add_to_cookbook(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    cookbook = request.user.cookbook
+    if recipe in cookbook.recipes.all():
+        cookbook.recipes.remove(recipe)
+    else:
+        cookbook.recipes.add(recipe)
+    return redirect('recipe_detail', pk=pk)
+
+class MyCookbookListView(ListView):
+    model = Recipe
+    template_name = 'my_cookbook.html'
+    context_object_name = 'recipes'
+
+    def get_queryset(self):
+        return self.request.user.cookbook.recipes.all()
 
 # Authentication/Authorization
 
