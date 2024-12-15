@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.db import models
 from django.db.models import Count
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
@@ -19,6 +19,19 @@ from django.views.generic import ListView
 from django.db import models
 from .models import Recipe, Tag
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+class HomeView(TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_authenticated:
+            cookbook, created = UserCookbook.objects.get_or_create(user=user)
+            context['my_cookbook'] = cookbook.recipes.all()
+            if cookbook.recipes.exists():
+                context['random_recipe'] = random.choice(list(cookbook.recipes.all()))
+        return context
 
 class MyRecipesListView(LoginRequiredMixin, ListView):
     model = Recipe
