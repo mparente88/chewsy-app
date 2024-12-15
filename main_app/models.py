@@ -18,6 +18,9 @@ class Recipe(models.Model):
     @property
     def total_time(self):
         return self.prep_time + self.cook_time
+    
+    def total_cookbooks(self):
+        return self.cookbooks.count()
 
 class Ingredient(models.Model):
     MEASUREMENT_CHOICES = [
