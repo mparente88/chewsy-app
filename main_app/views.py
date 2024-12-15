@@ -85,6 +85,15 @@ class AllRecipesListView(ListView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
+        context['tags'] = Tag.objects.all()
+        context['selected_tags'] = [
+            int(tag) for tag in self.request.GET.getlist('tags') if tag.isdigit()
+        ]
+        context['tag_categories'] = {
+            category: Tag.objects.filter(category=category)
+            for category, _ in Tag.TAG_CATEGORY_CHOICES
+        }
+
         if user.is_authenticated:
             cookbook, created = UserCookbook.objects.get_or_create(user=user)
             cookbook_recipes = cookbook.recipes.all()
@@ -96,6 +105,7 @@ class AllRecipesListView(ListView):
 
     def post(self, request, *args, **kwargs):
         return HttpResponseRedirect(request.path)
+
 
     
 class RecipeDetailView(LoginRequiredMixin, DetailView):

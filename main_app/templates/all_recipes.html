@@ -1,5 +1,25 @@
 {% extends 'base.html' %} {% block title %}All Recipes{% endblock %} {% block content %}
 <h1>All Recipes</h1>
+
+<button id="filter-toggle" class="btn" aria-expanded="false" aria-controls="filter-container">Filter Recipes <span id="filter-icon">&#9660;</span></button>
+
+<div id="filter-container" class="tag-filter">
+  <form method="get" action="">
+    {% for category, tags in tag_categories.items %}
+    <fieldset>
+      <legend>{{ category|title }}</legend>
+      {% for tag in tags %}
+      <label>
+        <input type="checkbox" name="tags" value="{{ tag.id }}" {% if tag.id in selected_tags %}checked{% endif %} />
+        {{ tag.name }}
+      </label>
+      {% endfor %}
+    </fieldset>
+    {% endfor %}
+    <button type="submit" class="btn">Apply Filter</button>
+  </form>
+</div>
+
 <div class="recipe-grid">
   {% for recipe in recipes %}
   <div class="recipe-card">
@@ -10,7 +30,7 @@
     </div>
   </div>
   {% empty %}
-  <p>No recipes found.</p>
+  <p>No recipes found. Try selecting different tags.</p>
   {% endfor %}
 </div>
 
