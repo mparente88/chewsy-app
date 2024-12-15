@@ -4,24 +4,26 @@
 <table class="meal-plan-table">
   <thead>
     <tr>
-      <th>Meal Type / Day</th>
+      <th class="meal-type-header">Meal Type / Day</th>
       {% for day in days %}
-      <th>{{ day|date:"D, M j" }}</th>
+      <th class="meal-day-header">{{ day|date:"D, M j" }}</th>
       {% endfor %}
     </tr>
   </thead>
   <tbody>
     {% for meal_type in meal_types %}
     <tr>
-      <td>{{ meal_type|capfirst }}</td>
+      <td class="meal-type-cell">{{ meal_type|capfirst }}</td>
       {% for day in days %}
-      <td>
+      <td class="meal-cell">
         {% if meals_by_day.day.meal_type %} {% with meal=meals_by_day.day.meal_type %}
-        <p>{% if meal.recipe %} {{ meal.recipe.title }} {% else %} No Recipe {% endif %}</p>
-        <a href="{% url 'edit_meal' meal.id %}">Edit</a> |
-        <a href="{% url 'delete_meal' meal.id %}">Remove</a>
+        <p class="meal-recipe-title">{% if meal.recipe %} {{ meal.recipe.title }} {% else %} No Recipe {% endif %}</p>
+        <div class="meal-actions">
+          <a href="{% url 'edit_meal' meal.id %}" class="btn">Edit</a>
+          <a href="{% url 'delete_meal' meal.id %}" class="btn btn-danger">Remove</a>
+        </div>
         {% endwith %} {% else %}
-        <a href="{% url 'add_meal' meal_plan.id day meal_type %}">Add Meal</a>
+        <a href="{% url 'add_meal' meal_plan.id day meal_type %}" class="btn">Add Meal</a>
         {% endif %}
       </td>
       {% endfor %}
