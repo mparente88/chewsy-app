@@ -9,8 +9,9 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Recipe, Ingredient, Tag, Instruction, UserCookbook
-from .forms import RecipeForm, IngredientForm, InstructionForm
+from .models import Recipe, Ingredient, Tag, Instruction, UserCookbook, MealPlan, Meal
+from .forms import RecipeForm, IngredientForm, InstructionForm, MealForm
+from datetime import date, timedelta
 import random
 
 # Recipes
@@ -354,6 +355,70 @@ class MyCookbookListView(ListView):
     def get_queryset(self):
         cookbook, created = UserCookbook.objects.get_or_create(user=self.request.user)
         return cookbook.recipes.all()
+
+# Meals and Meal Plans
+
+class MealPlanView(LoginRequiredMixin, View):
+    def get(self, request):
+        today = date.today()
+        start_of_week = today - timedelta(days=today.weekday())
+        meal_plan, created = MealPlan.objects.get_or_create(user=request.user, start_date=start_of_week)
+
+        days = [start_of_week + timedelta(days=i) for i in range(7)]
+
+        meal_types = ['breakfast', 'lunch', 'dinner', 'snack']
+
+        meals = meal_plan.meals.all()
+
+        meals_by_day = {d: {mt: None for mt in meal_types} for d in days}
+        for meal in meals:
+            meals_by_day[meal.date][meal.meal_type] = meal
+        
+        context = {
+            'meal_plan': meal_plan,
+            'days': days,
+            'meal_types': meal_types,
+            'meals_by_day': meals_by_day,
+        }
+
+        return render(request, 'meal_plan.html', context)
+    
+class AddMealView(LoginRequiredMixin, View):
+    def get(self, request, meal_plan_id, day, meal_type):
+        form = MealForm()
+        return render(request, 'add_meal.html', {'form': form, 'day': day, 'meal_type': meal_type})
+    
+    def post(self, request, meal_plan_id, day, meal_type):
+        meal_plan = get_object_or_404(MealPlan, pk=meal_plan_id, user=request.user)
+        form = MealForm(request.POST)
+        if form.is_valid():
+            meal = form.save(commit=False)
+            meal.meal_plan = meal_plan
+            meal.date = day
+            meal.meal_type = meal_type
+            meal.save()
+            return redirect('meal_plan')
+        return render(request, 'add_meal.html', {'form': form, 'day': day, 'meal_type': meal_type})
+
+class EditMealView(LoginRequiredMixin, View):
+    def get(self, request, meal_id):
+        meal = get_object_or_404(Meal, pk=meal_id, meal_plan__user=request.user)
+        form = MealForm(instance=meal)
+        return render(request, 'edit_meal.html', {'form': form, 'meal': meal})
+    
+    def post(self, request, meal_id):
+        meal = get_object_or_404(Meal, pk=meal_id, meal_plan__user=request.user)
+        form = MealForm(request.POST, instance=meal)
+        if form.is_valid():
+            form.save()
+            return redirect('meal_plan')
+        return render(request, 'edit_meal.html', {'form': form, 'meal': meal})
+
+class DeleteMealView(LoginRequiredMixin, View):
+    def post(self, request, meal_id):
+        meal = get_object_or_404(Meal, pk=meal_id, meal_plan__user=request.user)
+        meal.delete()
+        return redirect('meal_plan')
 
 # Authentication/Authorization
 

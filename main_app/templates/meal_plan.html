@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %}My Meal Plan{% endblock %} {% block content %}
+<h1>My Meal Plan</h1>
+
+<table class="meal-plan-table">
+  <thead>
+    <tr>
+      <th>Meal Type / Day</th>
+      {% for day in days %}
+      <th>{{ day|date:"D, M j" }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for meal_type in meal_types %}
+    <tr>
+      <td>{{ meal_type|capfirst }}</td>
+      {% for day in days %}
+      <td>
+        {% if meals_by_day.day.meal_type %} {% with meal=meals_by_day.day.meal_type %}
+        <p>{{ meal.recipe.title if meal.recipe else "No Recipe" }}</p>
+        <a href="{% url 'edit_meal' meal.id %}">Edit</a> |
+        <a href="{% url 'delete_meal' meal.id %}">Remove</a>
+        {% endwith %} {% else %}
+        <a href="{% url 'add_meal' meal_plan.id day=day meal_type=meal_type %}">Add Meal</a>
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
