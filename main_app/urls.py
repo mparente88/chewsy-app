@@ -5,7 +5,7 @@ from .views import (
     IngredientCreateView, IngredientUpdateView, IngredientDeleteView,
     TagListView, SignUpView, InstructionCreateView, InstructionDeleteView, 
     InstructionUpdateView, AllRecipesListView, MyRecipesListView,
-    InstructionReorderView, DuplicateRecipeView
+    InstructionReorderView, DuplicateRecipeView, add_to_cookbook, MyCookbookListView
 )
 
 urlpatterns = [
@@ -28,4 +28,6 @@ urlpatterns = [
     path('instruction/<int:pk>/delete/', InstructionDeleteView.as_view(), name='instruction_delete'),
     path('recipe/<int:recipe_id>/instructions/reorder/', InstructionReorderView.as_view(), name='instructions_reorder'),
     path('recipe/<int:pk>/duplicate/', DuplicateRecipeView.as_view(), name='recipe_duplicate'),
+    path('recipe/<int:pk>/cookbook/', add_to_cookbook, name='add_to_cookbook'),
+    path('my-cookbook/', MyCookbookListView.as_view(), name='my_cookbook'),
 ]
