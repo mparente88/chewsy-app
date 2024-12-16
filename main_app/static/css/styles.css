@@ -58,7 +58,7 @@ header h1 a {
   font-family: "Poppins", sans-serif;
 }
 
-/* Tagline Styling */
+/* Tagline Styling (unchanged) */
 header .tagline {
   font-family: "Pacifico", cursive;
   font-size: 1.25rem;
@@ -161,6 +161,11 @@ header nav a.active {
   background-color: #b8503b;
 }
 
+button.btn {
+  border: none;
+  cursor: pointer;
+}
+
 /* Footer */
 footer {
   text-align: center;
@@ -212,6 +217,12 @@ footer {
 .meal-cell {
   background-color: #fff9f4;
   border-bottom: 1px solid #eee;
+}
+
+.meal-recipe-title {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #4d2b1f;
 }
 
 .meal-actions {
@@ -280,7 +291,7 @@ footer {
   opacity: 1;
 }
 
-/* Mobile Responsive Meal Plan Table <3 */
+/* Mobile Responsive Meal Plan Table */
 @media (max-width: 768px) {
   .meal-plan-table {
     border: 0;
@@ -313,4 +324,63 @@ footer {
     padding: 5px 8px;
     font-size: 0.85rem;
   }
+}
+
+@media (max-width: 480px) {
+  .meal-plan-table td {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+  .meal-plan-table td::before {
+    font-size: 0.85rem;
+  }
+  .meal-plan-table .meal-actions .btn {
+    padding: 4px 6px;
+    font-size: 0.8rem;
+  }
+}
+
+.meal-plan-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff9f4;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.meal-plan-navigation a {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #e2711d;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.meal-plan-navigation a:hover {
+  background-color: #c8590f;
+}
+
+.meal-plan-navigation .current-week {
+  font-weight: bold;
+  color: #4d2b1f;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Tag Filter Button */
+
+.tag-filter {
+  display: none;
+}
+.tag-filter.show {
+  display: block;
+}
+
+#filter-icon {
+  display: inline-block;
+  transition: transform 0.3s ease;
 }

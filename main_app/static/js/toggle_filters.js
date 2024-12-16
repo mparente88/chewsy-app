@@ -4,13 +4,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const filterIcon = document.getElementById("filter-icon")
 
   if (filterToggle && filterContainer && filterIcon) {
+    filterContainer.classList.remove("show")
+    filterToggle.setAttribute("aria-expanded", "false")
+    filterIcon.style.transform = "rotate(0deg)"
+
     filterToggle.addEventListener("click", function () {
       const isShowing = filterContainer.classList.contains("show")
+
       filterContainer.classList.toggle("show", !isShowing)
+
       filterToggle.setAttribute("aria-expanded", !isShowing)
-      filterIcon.style.transform = !isShowing ? "rotate(180deg)" : "rotate(0deg)"
+
+      if (!isShowing) {
+        filterIcon.style.transform = "rotate(180deg)"
+      } else {
+        filterIcon.style.transform = "rotate(0deg)"
+      }
     })
   } else {
-    console.log("Filter elements not found")
+    console.error("Filter elements not found: filter-toggle, filter-container, or filter-icon is missing.")
   }
 })
