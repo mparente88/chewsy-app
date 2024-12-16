@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% block title %}Tag Management{% endblock %} {% block content %}
+<h1>Tag Management</h1>
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li class="{{ message.tags }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Create a New Tag</h2>
+<form method="post">
+  {% csrf_token %}
+  <label for="tag_name">Tag Name:</label>
+  <input type="text" id="tag_name" name="tag_name" required />
+
+  <label for="tag_category">Category:</label>
+  <select id="tag_category" name="tag_category" required>
+    {% for key, value in categories %}
+    <option value="{{ key }}">{{ value }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Create Tag</button>
+</form>
+
+<h2>Existing Tags</h2>
+<ul>
+  {% for key, value in categories %}
+  <li>
+    <strong>{{ value }}</strong>
+    <ul>
+      {% for tag in tags %} {% if tag.category == key %}
+      <li id="tag-{{ tag.id }}">
+        <span class="tag-name">{{ tag.name }}</span>
+        <button class="edit-tag-btn" data-id="{{ tag.id }}" data-name="{{ tag.name }}" data-category="{{ tag.category }}">Edit</button>
+        <button class="delete-tag-btn" data-id="{{ tag.id }}">Delete</button>
+      </li>
+      {% endif %} {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

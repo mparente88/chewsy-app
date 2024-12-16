@@ -3,6 +3,8 @@ from django.db import models
 from django.db.models import Count
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
@@ -259,6 +261,62 @@ class TagListView(LoginRequiredMixin, ListView):
     model = Tag
     template_name = 'tag_list.html'
     context_object_name = 'tags'
+
+class TagManagementView(UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.is_superuser
+    
+    def get(self, request):
+        categories = Tag.TAG_CATEGORY_CHOICES
+        tags = Tag.objects.all()
+        return render(request, 'admin/tag_management.html', {
+            'categories': categories,
+            'tags': tags,
+        })
+    
+    def post(self, request):
+        tag_name = request.POST.get('tag_name')
+        tag_category = request.POST.get('tag_category')
+
+        if tag_name and tag_category:
+            valid_categories = [choice[0] for choice in Tag.TAG_CATEGORY_CHOICES]
+            if tag_category not in valid_categories:
+                messages.error(request, "Invalid category selected.")
+            else:
+                Tag.objects.create(name=tag_name, category=tag_category)
+                messages.success(request, f"Tag '{tag_name}' added to category '{tag_category}'.")
+        else:
+            messages.error(request, "Both tag name and category are required.")
+
+        return redirect('tag_management')
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class EditTagView(View):
+    def post(self, request, tag_id):
+        try:
+            tag = Tag.objects.get(id=tag_id)
+            tag_name = request.POST.get("name")
+            tag_category = request.POST.get("category")
+
+            if tag_name:
+                tag.name = tag_name
+            if tag_category in dict(Tag.TAG_CATEGORY_CHOICES):
+                tag.category = tag_category
+
+            tag.save()
+            return JsonResponse({"success": True, "message": "Tag updated successfully."})
+        except Tag.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Tag not found."}, status=404)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteTagView(View):
+    def post(self, request, tag_id):
+        try:
+            tag = Tag.objects.get(id=tag_id)
+            tag.delete()
+            return JsonResponse({"success": True, "message": "Tag deleted successfully."})
+        except Tag.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Tag not found."}, status=404)
 
 # Instructions
 

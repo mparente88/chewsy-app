@@ -408,3 +408,52 @@ footer {
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.messages {
+  padding: 10px;
+  list-style: none;
+}
+
+.messages .success {
+  color: green;
+}
+
+.messages .error {
+  color: red;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input,
+form select,
+form button {
+  margin-bottom: 10px;
+}
+
+.edit-tag-btn,
+.delete-tag-btn {
+  background-color: #f4a261;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.edit-tag-btn:hover {
+  background-color: #f4c04d;
+}
+
+.delete-tag-btn:hover {
+  background-color: #d35d45;
+}
