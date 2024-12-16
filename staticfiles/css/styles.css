@@ -612,3 +612,16 @@ form button {
 .recipe-detail ul li span {
   margin-left: 10px;
 }
+
+.tags-list {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #6e5846;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.tags-list span {
+  display: inline;
+}

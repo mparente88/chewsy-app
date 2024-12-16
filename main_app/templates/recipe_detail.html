@@ -2,14 +2,12 @@
 <div class="recipe-detail">
   <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
   <h1>{{ recipe.title }}</h1>
-  <h2>Tags</h2>
-  <ul class="tags">
+  <p class="tags-list">
     {% for tag in recipe.tags.all %}
-    <li>{{ tag.name }} ({{ tag.get_category_display }})</li>
-    {% empty %}
-    <p>No tags assigned to this recipe.</p>
+    <span>{{ tag.name }}</span>{% if not forloop.last %}, {% endif %} {% empty %}
+    <span>No tags assigned.</span>
     {% endfor %}
-  </ul>
+  </p>
   <p>{{ recipe.description }}</p>
   <p><strong>Prep Time:</strong> {{ recipe.prep_time }} mins</p>
   <p><strong>Cook Time:</strong> {{ recipe.cook_time }} mins</p>
