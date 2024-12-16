@@ -269,7 +269,7 @@ class TagManagementView(UserPassesTestMixin, View):
     def get(self, request):
         categories = Tag.TAG_CATEGORY_CHOICES
         tags = Tag.objects.all()
-        return render(request, 'admin/tag_management.html', {
+        return render(request, 'superuser/tag_management.html', {
             'categories': categories,
             'tags': tags,
         })

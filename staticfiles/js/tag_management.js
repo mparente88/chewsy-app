@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       const tagId = this.getAttribute("data-id")
       if (confirm("Are you sure you want to delete this tag?")) {
-        fetch(`/admin/tags/delete/${tagId}/`, {
+        fetch(`/superuser/tags/delete/${tagId}/`, {
           method: "POST",
           headers: {
             "X-CSRFToken": getCookie("csrftoken"),
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const newCategory = prompt("Edit tag category:", tagCategory)
 
       if (newName && newCategory) {
-        fetch(`/admin/tags/edit/${tagId}/`, {
+        fetch(`/superuser/tags/edit/${tagId}/`, {
           method: "POST",
           headers: {
             "X-CSRFToken": getCookie("csrftoken"),
