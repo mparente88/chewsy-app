@@ -17,10 +17,6 @@ a {
   color: #e2711d;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 /* Container Styling */
 .container {
   max-width: 1200px;
@@ -383,4 +379,32 @@ footer {
 #filter-icon {
   display: inline-block;
   transition: transform 0.3s ease;
+}
+
+/* Filter Tags */
+.tag-filter label {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: #f9dac5;
+  color: #4d2b1f;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tag-filter label:hover {
+  background-color: #fde8d4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tag-filter input[type="checkbox"] {
+  display: none;
+}
+
+.tag-filter input[type="checkbox"]:checked + label {
+  background-color: #e2711d !important;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
