@@ -5,12 +5,12 @@ name = "pypi"
 
 [packages]
 django = "*"
-psycopg2-binary = "*"
 python-dotenv = "*"
 whitenoise = "*"
 gunicorn = "*"
 dj-database-url = "*"
 pillow = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
