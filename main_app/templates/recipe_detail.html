@@ -19,13 +19,16 @@
   <ul>
     {% for ingredient in recipe.ingredients.all %}
     <li>
-      {{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }}
+      {{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }} {% if recipe.user == user %}
       <a href="{% url 'ingredient_update' ingredient.pk %}" class="btn btn-sm">Edit</a>
       <a href="{% url 'ingredient_delete' ingredient.pk %}" class="btn btn-sm btn-danger">Delete</a>
+      {% endif %}
     </li>
     {% endfor %}
   </ul>
+  {% if recipe.user == user %}
   <a href="{% url 'ingredient_create' recipe.pk %}" class="btn">Add Ingredient</a>
+  {% endif %}
 
   <h2>Instructions</h2>
   <ol>
@@ -33,19 +36,23 @@
     <li>
       {{ instruction.description }} {% if instruction.time_minutes %}
       <span> ({{ instruction.time_minutes }} mins)</span>
-      {% endif %}
+      {% endif %} {% if recipe.user == user %}
       <a href="{% url 'instruction_update' instruction.pk %}">Edit</a>
       <a href="{% url 'instruction_delete' instruction.pk %}">Delete</a>
+      {% endif %}
     </li>
     {% endfor %}
   </ol>
+  {% if recipe.user == user %}
   <a href="{% url 'instruction_create' recipe.pk %}" class="btn">Add Instruction</a>
   <a href="{% url 'instructions_reorder' recipe.pk %}" class="btn">Reorder Instructions</a>
-
+  {% endif %} {% if recipe.user == user %}
   <h2>Actions</h2>
   <a href="{% url 'recipe_update' recipe.pk %}" class="btn">Edit Recipe</a>
   <a href="{% url 'recipe_delete' recipe.pk %}" class="btn">Delete Recipe</a>
+  {% endif %}
   <a href="{% url 'recipe_duplicate' recipe.pk %}" class="btn" onclick="return confirm('Are you sure you want to duplicate this recipe?')">Duplicate Recipe</a>
+
   {% if user.is_authenticated %} {% if recipe in user.cookbook.recipes.all %}
   <form method="post" action="{% url 'add_to_cookbook' recipe.pk %}">
     {% csrf_token %}
