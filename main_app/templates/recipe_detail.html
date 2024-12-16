@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %}{{ recipe.title }}{% endblock %} {% block content %}
+{% extends 'base.html' %} {% load recipe_filters %}{% block title %}{{ recipe.title }}{% endblock %} {% block content %}
 <div class="recipe-detail">
   <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
   <h1>{{ recipe.title }}</h1>
@@ -19,7 +19,7 @@
   <ul>
     {% for ingredient in recipe.ingredients.all %}
     <li>
-      {{ ingredient.quantity }} {{ ingredient.measurement }} {{ ingredient.name }} {% if recipe.user == user %}
+      {{ ingredient.quantity|decimal_to_fraction }} {{ ingredient.measurement }} {{ ingredient.name }} {% if recipe.user == user %}
       <a href="{% url 'ingredient_update' ingredient.pk %}" class="btn btn-sm">Edit</a>
       <a href="{% url 'ingredient_delete' ingredient.pk %}" class="btn btn-sm btn-danger">Delete</a>
       {% endif %}

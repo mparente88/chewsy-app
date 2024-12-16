@@ -1,3 +1,4 @@
+from django import forms
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseRedirect
 from django.db import models
 from django.db.models import Count
@@ -14,6 +15,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Recipe, Ingredient, Tag, Instruction, UserCookbook, MealPlan, Meal
 from .forms import RecipeForm, IngredientForm, InstructionForm, MealForm
 from datetime import date, timedelta
+from decimal import Decimal
+from fractions import Fraction
 import random
 
 # Recipes
@@ -108,8 +111,6 @@ class AllRecipesListView(ListView):
 
     def post(self, request, *args, **kwargs):
         return HttpResponseRedirect(request.path)
-
-
     
 class RecipeDetailView(DetailView):
     model = Recipe
@@ -220,6 +221,7 @@ class IngredientCreateView(CreateView):
         form.instance.recipe = self.recipe
         if form.instance.order is None:
             form.instance.order = self.recipe.ingredients.count() + 1
+
         return super().form_valid(form)
 
     def get_success_url(self):

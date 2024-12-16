@@ -91,7 +91,7 @@ class Ingredient(models.Model):
     ]
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredients")
     name = models.CharField(max_length=100)
-    quantity = models.IntegerField()
+    quantity = models.DecimalField(max_digits=5, decimal_places=2)
     measurement = models.CharField(max_length=20, choices=MEASUREMENT_CHOICES)
     order = models.IntegerField(null=True, blank=True)
 
