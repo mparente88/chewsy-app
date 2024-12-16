@@ -560,3 +560,19 @@ form button {
     gap: 5px;
   }
 }
+
+.recipe-detail .btn.btn-sm {
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+
+.recipe-detail ol li {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.recipe-detail ol li span {
+  font-weight: bold;
+  color: #e2711d;
+}
