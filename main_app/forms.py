@@ -17,6 +17,7 @@ from fractions import Fraction
 
 class FractionOrDecimalField(forms.Field):
     def to_python(self, value):
+        print("FractionOrDecimalField to_python called with:", value)
         if not value:
             return None
         try:
@@ -25,17 +26,20 @@ class FractionOrDecimalField(forms.Field):
                 parts = value.split()
                 total_fraction = Fraction(0)
                 for part in parts:
+                    print("Parsing part:", part)
                     total_fraction += Fraction(part)
-
                 decimal_value = Decimal(str(float(total_fraction)))
+                print("Converted fraction to decimal:", decimal_value)
                 return decimal_value.quantize(Decimal('0.01'))
             else:
                 decimal_value = Decimal(value)
+                print("Decimal input:", decimal_value)
                 return decimal_value.quantize(Decimal('0.01'))
         except (ValueError, ZeroDivisionError, InvalidOperation):
             raise forms.ValidationError(
                 "Invalid quantity. Please enter a valid number or fraction (e.g., '1', '1/2', '2.5', '2 1/3')."
             )
+
 
 class IngredientForm(forms.ModelForm):
     quantity = FractionOrDecimalField()
