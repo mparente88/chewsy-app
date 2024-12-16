@@ -11,10 +11,6 @@ class RecipeForm(forms.ModelForm):
             'tags': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
-from django import forms
-from decimal import Decimal, InvalidOperation
-from fractions import Fraction
-
 class FractionOrDecimalField(forms.Field):
     def to_python(self, value):
         if not value:
@@ -33,9 +29,8 @@ class FractionOrDecimalField(forms.Field):
                 return decimal_value.quantize(Decimal('0.01'))
         except (ValueError, ZeroDivisionError, InvalidOperation):
             raise forms.ValidationError(
-                "Invalid quantity. Please enter a valid number or fraction (e.g., '1', '1/2', '2.5', '2 1/3')."
+                "Please enter a valid number or fraction (e.g., '1', '1/2', '2.5', '2 1/3')."
             )
-
 
 class IngredientForm(forms.ModelForm):
     quantity = FractionOrDecimalField()

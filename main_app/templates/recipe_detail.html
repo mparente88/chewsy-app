@@ -63,8 +63,10 @@
     {% csrf_token %}
     <button type="submit" class="btn btn-success">Add to My Cookbook</button>
   </form>
-  {% endif %}
-  <p>This recipe is in {{ recipe.total_cookbooks }} user's cookbooks.</p>
-  {% endif %}
+  {% endif %} {% if recipe.total_cookbooks == 1 %}
+  <p>This recipe is in {{ recipe.total_cookbooks }} cookbook.</p>
+  {% else %}
+  <p>This recipe is in {{ recipe.total_cookbooks }} cookbooks.</p>
+  {% endif %} {% endif %}
 </div>
 {% endblock %}
