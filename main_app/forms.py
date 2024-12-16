@@ -1,5 +1,5 @@
 from django import forms
-from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from .models import Recipe, Ingredient, Instruction, Tag, Meal
 
