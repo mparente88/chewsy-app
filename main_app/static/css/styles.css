@@ -437,6 +437,63 @@ form button {
   margin-bottom: 10px;
 }
 
+/* Tag Management Section */
+.tag-management-container {
+  margin-top: 20px;
+}
+
+.tag-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tag-management-header h2 {
+  font-size: 1.5rem;
+  color: #4d2b1f;
+}
+
+.add-tag-btn {
+  background-color: #f4a261;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.add-tag-btn:hover {
+  background-color: #e08a3c;
+}
+
+.tag-list {
+  margin-top: 20px;
+}
+
+.tag-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff9f4;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tag-item span {
+  font-size: 1rem;
+  color: #4d2b1f;
+}
+
+.tag-item-actions {
+  display: flex;
+  gap: 10px;
+}
+
 .edit-tag-btn,
 .delete-tag-btn {
   background-color: #f4a261;
@@ -444,7 +501,6 @@ form button {
   border: none;
   border-radius: 4px;
   padding: 5px 10px;
-  margin-left: 5px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
@@ -456,4 +512,51 @@ form button {
 
 .delete-tag-btn:hover {
   background-color: #d35d45;
+}
+
+/* Mobile Responsive Tag Management */
+@media (max-width: 768px) {
+  .tag-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .tag-management-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .add-tag-btn {
+    align-self: stretch;
+  }
+
+  .tag-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tag-item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .tag-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tag-management-header h2 {
+    font-size: 1rem;
+  }
+
+  .add-tag-btn {
+    padding: 6px 8px;
+    font-size: 0.9rem;
+  }
+
+  .tag-item-actions {
+    gap: 5px;
+  }
 }
