@@ -111,13 +111,10 @@ class AllRecipesListView(ListView):
 
 
     
-class RecipeDetailView(LoginRequiredMixin, DetailView):
+class RecipeDetailView(DetailView):
     model = Recipe
     template_name = 'recipe_detail.html'
     context_object_name = 'recipe'
-
-    def get_queryset(self):
-        return Recipe.objects.filter(user=self.request.user)
     
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
