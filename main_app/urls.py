@@ -54,7 +54,7 @@ urlpatterns = [
     path('meal-plan/<int:meal_plan_id>/add-meal/<slug:day>/<slug:meal_type>/', AddMealView.as_view(), name='add_meal'),
     path('meal-plan/edit-meal/<int:meal_id>/', EditMealView.as_view(), name='edit_meal'),
     path('meal-plan/delete-meal/<int:pk>/', DeleteMealView.as_view(), name='delete_meal'),
-    path("admin/tags/", TagManagementView.as_view(), name="tag_management"),
-    path("admin/tags/edit/<int:tag_id>/", EditTagView.as_view(), name="edit_tag"),
-    path("admin/tags/delete/<int:tag_id>/", DeleteTagView.as_view(), name="delete_tag"),
+    path("superuser/tags/", TagManagementView.as_view(), name="tag_management"),
+    path("superuser/tags/edit/<int:tag_id>/", EditTagView.as_view(), name="edit_tag"),
+    path("superuser/tags/delete/<int:tag_id>/", DeleteTagView.as_view(), name="delete_tag"),
 ]
