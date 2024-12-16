@@ -28,7 +28,7 @@
   {% endif %}
 
   <h2>Instructions</h2>
-  <ol>
+  <ol class="instruction-list">
     {% for instruction in recipe.instructions.all %}
     <li>
       {{ instruction.description }} {% if instruction.time_minutes %}
