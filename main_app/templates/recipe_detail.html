@@ -1,6 +1,17 @@
 {% extends 'base.html' %} {% load recipe_filters %}{% block title %}{{ recipe.title }}{% endblock %} {% block content %}
 <div class="recipe-detail">
   <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}/static/images/placeholder.jpg{% endif %}" alt="{{ recipe.title }}" />
+  {% if user.is_authenticated %} {% if recipe in user.cookbook.recipes.all %}
+  <form method="post" action="{% url 'add_to_cookbook' recipe.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-remove-cookbook">Remove from My Cookbook</button>
+  </form>
+  {% else %}
+  <form method="post" action="{% url 'add_to_cookbook' recipe.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-add-cookbook">Add to My Cookbook</button>
+  </form>
+  {% endif %}
   <h1>{{ recipe.title }}</h1>
   <p class="tags-list">
     {% for tag in recipe.tags.all %}
@@ -8,6 +19,11 @@
     <span>No tags assigned.</span>
     {% endfor %}
   </p>
+  {% endif %} {% if recipe.total_cookbooks == 1 %}
+  <p>This recipe is in {{ recipe.total_cookbooks }} cookbook.</p>
+  {% else %}
+  <p>This recipe is in {{ recipe.total_cookbooks }} cookbooks.</p>
+  {% endif %}
   <p>{{ recipe.description }}</p>
   <p><strong>Prep Time:</strong> {{ recipe.prep_time }} mins</p>
   <p><strong>Cook Time:</strong> {{ recipe.cook_time }} mins</p>
@@ -49,21 +65,5 @@
   <a href="{% url 'recipe_delete' recipe.pk %}" class="btn">Delete Recipe</a>
   {% endif %}
   <a href="{% url 'recipe_duplicate' recipe.pk %}" class="btn" onclick="return confirm('Are you sure you want to duplicate this recipe?')">Duplicate Recipe</a>
-
-  {% if user.is_authenticated %} {% if recipe in user.cookbook.recipes.all %}
-  <form method="post" action="{% url 'add_to_cookbook' recipe.pk %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Remove from My Cookbook</button>
-  </form>
-  {% else %}
-  <form method="post" action="{% url 'add_to_cookbook' recipe.pk %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-success">Add to My Cookbook</button>
-  </form>
-  {% endif %} {% if recipe.total_cookbooks == 1 %}
-  <p>This recipe is in {{ recipe.total_cookbooks }} cookbook.</p>
-  {% else %}
-  <p>This recipe is in {{ recipe.total_cookbooks }} cookbooks.</p>
-  {% endif %} {% endif %}
 </div>
 {% endblock %}
