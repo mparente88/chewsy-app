@@ -8,7 +8,7 @@ from .views import (
     InstructionUpdateView, AllRecipesListView, MyRecipesListView,
     InstructionReorderView, DuplicateRecipeView, add_to_cookbook, MyCookbookListView,
     shuffle_recipes, HomeView, MealPlanView, AddMealView, EditMealView, DeleteMealView,
-    TagManagementView, EditTagView, DeleteTagView
+    TagManagementView, EditTagView, DeleteTagView, ShoppingListView
 )
 
 # ChatGPT helped me with this converter part
@@ -57,4 +57,5 @@ urlpatterns = [
     path("superuser/tags/", TagManagementView.as_view(), name="tag_management"),
     path("superuser/tags/edit/<int:tag_id>/", EditTagView.as_view(), name="edit_tag"),
     path("superuser/tags/delete/<int:tag_id>/", DeleteTagView.as_view(), name="delete_tag"),
+    path('shopping-list/<slug:start_date>/<slug:end_date>/', ShoppingListView.as_view(), name='shopping_list'),
 ]

@@ -495,3 +495,41 @@ class SignUpView(CreateView):
     form_class = UserCreationForm
     template_name = 'signup.html'
     success_url = reverse_lazy('login')
+
+# Shopping List
+
+class ShoppingListView(LoginRequiredMixin, View):
+    def get(self, request, start_date, end_date):
+        start_date = date.fromisoformat(start_date)
+        end_date = date.fromisoformat(end_date)
+
+        meals = Meal.objects.filter(
+            meal_plan__user=request.user,
+            date__range=(start_date, end_date)
+        ).select_related('recipe')
+
+        ingredient_data = {}
+        for meal in meals:
+            if meal.recipe:
+                for ingredient in meal.recipe.ingredients.all():
+                    key = (ingredient.name, ingredient.measurement)
+                    if key in ingredient_data:
+                        ingredient_data[key] += ingredient.quantity
+                    else:
+                        ingredient_data[key] = ingredient.quantity
+
+        combined_ingredients = [
+            {
+                'name': name,
+                'measurement': measurement,
+                'quantity': quantity
+            }
+            for (name, measurement), quantity in ingredient_data.items()
+        ]
+
+        context = {
+            'ingredients': combined_ingredients,
+            'start_date': start_date,
+            'end_date': end_date
+        }
+        return render(request, 'shopping_list.html', context)

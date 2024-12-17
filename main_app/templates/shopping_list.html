@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block title %}Shopping List{% endblock %} {% block content %}
+<h1>Shopping List</h1>
+<p>From {{ start_date }} to {{ end_date }}</p>
+
+<table class="shopping-list-table">
+  <thead>
+    <tr>
+      <th>Quantity</th>
+      <th>Measurement</th>
+      <th>Ingredient</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in ingredients %}
+    <tr>
+      <td>{{ item.quantity|floatformat:2 }}</td>
+      <td>{{ item.measurement|default:"-" }}</td>
+      <td>{{ item.name }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="3">No ingredients found for this date range.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'meal_plan' %}" class="btn">Back to Meal Plan</a>
+{% endblock %}

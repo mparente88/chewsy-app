@@ -734,3 +734,35 @@ form button {
 .meal-link:hover {
   color: #f7a76c;
 }
+
+.btn-shopping {
+  background-color: #e2711d;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-shopping:hover {
+  background-color: #f79c5c;
+}
+
+.shopping-list-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.shopping-list-table table th,
+table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.shopping-list-table table th {
+  background-color: #e2711d;
+  color: #fff;
+}
