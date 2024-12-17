@@ -33,12 +33,13 @@
   <ul>
     {% for ingredient in recipe.ingredients.all %}
     <li>
-      <a href="{% url 'ingredient_update' ingredient.pk %}" class="btn btn-edit">Edit</a>
-      <a href="{% url 'ingredient_delete' ingredient.pk %}" class="btn btn-remove">Delete</a>
-      <span> {{ ingredient.quantity|decimal_to_fraction }} {{ ingredient.measurement }} {{ ingredient.name }} </span>
+      <a href="{% url 'ingredient_update' ingredient.pk %}" class="btn btn-sm">Edit</a>
+      <a href="{% url 'ingredient_delete' ingredient.pk %}" class="btn btn-sm btn-danger">Delete</a>
+      {{ ingredient.quantity|decimal_to_fraction }} {{ ingredient.measurement }} {{ ingredient.name }} {% if ingredient.notes %} ({{ ingredient.notes }}){% endif %} {% if recipe.user == user %} {% endif %}
     </li>
     {% endfor %}
   </ul>
+
   {% if recipe.user == user %}
   <a href="{% url 'ingredient_create' recipe.pk %}" class="btn">Add Ingredient</a>
   {% endif %}
