@@ -509,22 +509,28 @@ class ShoppingListView(LoginRequiredMixin, View):
         ).select_related('recipe')
 
         ingredient_data = {}
+
         for meal in meals:
             if meal.recipe:
                 for ingredient in meal.recipe.ingredients.all():
                     key = (ingredient.name, ingredient.measurement)
-                    if key in ingredient_data:
-                        ingredient_data[key] += ingredient.quantity
-                    else:
-                        ingredient_data[key] = ingredient.quantity
+                    note = ingredient.notes or ""
 
+                    if key not in ingredient_data:
+                        ingredient_data[key] = {'total_quantity': Decimal(0), 'notes': []}
+
+                    ingredient_data[key]['total_quantity'] += ingredient.quantity
+                    if note:
+                        ingredient_data[key]['notes'].append(f"{ingredient.quantity} {note}")
+        
         combined_ingredients = [
             {
                 'name': name,
                 'measurement': measurement,
-                'quantity': quantity
+                'total_quantity': data['total_quantity'],
+                'notes': "; ".join(set(data['notes']))
             }
-            for (name, measurement), quantity in ingredient_data.items()
+            for (name, measurement), data in ingredient_data.items()
         ]
 
         context = {
@@ -533,3 +539,4 @@ class ShoppingListView(LoginRequiredMixin, View):
             'end_date': end_date
         }
         return render(request, 'shopping_list.html', context)
+

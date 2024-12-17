@@ -2,24 +2,26 @@
 <h1>Shopping List</h1>
 <p>From {{ start_date }} to {{ end_date }}</p>
 
-<table class="shopping-list-table">
+<table>
   <thead>
     <tr>
       <th>Quantity</th>
       <th>Measurement</th>
       <th>Ingredient</th>
+      <th>Notes</th>
     </tr>
   </thead>
   <tbody>
     {% for item in ingredients %}
     <tr>
-      <td>{{ item.quantity|floatformat:2 }}</td>
+      <td>{{ item.total_quantity|floatformat:2 }}</td>
       <td>{{ item.measurement|default:"-" }}</td>
       <td>{{ item.name }}</td>
+      <td>{{ item.notes|default:"-" }}</td>
     </tr>
     {% empty %}
     <tr>
-      <td colspan="3">No ingredients found for this date range.</td>
+      <td colspan="4">No ingredients found for this date range.</td>
     </tr>
     {% endfor %}
   </tbody>
