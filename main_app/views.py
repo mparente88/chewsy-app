@@ -522,7 +522,7 @@ class ShoppingListView(LoginRequiredMixin, View):
                     ingredient_data[key]['total_quantity'] += ingredient.quantity
                     if note:
                         ingredient_data[key]['notes'].append(f"{ingredient.quantity} {note}")
-        
+
         combined_ingredients = [
             {
                 'name': name,
@@ -533,10 +533,13 @@ class ShoppingListView(LoginRequiredMixin, View):
             for (name, measurement), data in ingredient_data.items()
         ]
 
+        combined_ingredients.sort(key=lambda x: x['name'].lower())
+
         context = {
             'ingredients': combined_ingredients,
             'start_date': start_date,
             'end_date': end_date
         }
         return render(request, 'shopping_list.html', context)
+
 
