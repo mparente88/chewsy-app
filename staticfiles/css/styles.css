@@ -645,3 +645,49 @@ form button {
 .instruction-list li:hover span {
   color: #e2711d;
 }
+
+.drag-handle {
+  cursor: grab;
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color: #f4a261;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.drag-handle:hover {
+  color: #e08a3c;
+  transform: scale(1.2);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+  color: #d35d45;
+  transform: scale(1.1);
+}
+
+.instruction-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #fff9f4;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.instruction-item:hover {
+  background-color: #fde8d4;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.instruction-text {
+  font-size: 1rem;
+  color: #4d2b1f;
+  flex: 1;
+}
+
+#reorder-form .btn {
+  margin-top: 20px;
+}
