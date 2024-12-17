@@ -24,7 +24,11 @@
         {% for day, meal in day_meals %}
         <td data-label="{{ day|date:'D, M j' }}">
           {% if meal %}
-          <p>{% if meal.recipe %}{{ meal.recipe.title }}{% else %}No Recipe{% endif %}</p>
+          <p>
+            {% if meal.recipe %}
+            <a href="{% url 'recipe_detail' meal.recipe.id %}" class="meal-link">{{ meal.recipe.title }}</a>
+            {% else %} No Recipe {% endif %}
+          </p>
           <div class="meal-actions">
             <a class="btn btn-edit" href="{% url 'edit_meal' meal.id %}">Edit</a>
             <a class="btn btn-remove" href="{% url 'delete_meal' meal.id %}">Remove</a>

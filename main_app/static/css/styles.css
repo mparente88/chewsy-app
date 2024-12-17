@@ -723,3 +723,14 @@ form button {
   background-color: #b8503b;
   transform: scale(1.05);
 }
+
+.meal-link {
+  color: #e2711d;
+  text-decoration: underline;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.meal-link:hover {
+  color: #f7a76c;
+}

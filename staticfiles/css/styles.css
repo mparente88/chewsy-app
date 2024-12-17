@@ -693,7 +693,7 @@ form button {
 }
 
 .btn-add-cookbook {
-  background-color: #4caf50;
+  background-color: #f4c04d;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -704,12 +704,12 @@ form button {
 }
 
 .btn-add-cookbook:hover {
-  background-color: #45a049;
+  background-color: #d6a43b;
   transform: scale(1.05);
 }
 
 .btn-remove-cookbook {
-  background-color: #f44336;
+  background-color: #d35d45;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -720,6 +720,17 @@ form button {
 }
 
 .btn-remove-cookbook:hover {
-  background-color: #e41e26;
+  background-color: #b8503b;
   transform: scale(1.05);
+}
+
+.meal-link {
+  color: #e2711d;
+  text-decoration: underline;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.meal-link:hover {
+  color: #f7a76c;
 }
