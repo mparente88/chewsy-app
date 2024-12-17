@@ -21,11 +21,6 @@ import random
 
 # Recipes
 
-from django.views.generic import ListView
-from django.db import models
-from .models import Recipe, Tag
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 class HomeView(TemplateView):
     template_name = 'home.html'
 
