@@ -35,7 +35,7 @@
     <li>
       <a href="{% url 'ingredient_update' ingredient.pk %}" class="btn btn-sm btn-edit">Edit</a>
       <a href="{% url 'ingredient_delete' ingredient.pk %}" class="btn btn-sm btn-remove btn-danger">Delete</a>
-      {{ ingredient.quantity|decimal_to_fraction }} {{ ingredient.measurement }} {{ ingredient.name }} {% if ingredient.notes %} ({{ ingredient.notes }}){% endif %} {% if recipe.user == user %} {% endif %}
+      {{ ingredient.quantity|decimal_to_fraction }} {{ ingredient.measurement }} of {{ ingredient.name }} {% if ingredient.notes %} ({{ ingredient.notes }}){% endif %} {% if recipe.user == user %} {% endif %}
     </li>
     {% endfor %}
   </ul>
