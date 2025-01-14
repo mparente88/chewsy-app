@@ -27,6 +27,16 @@
           </a>
         </h1>
         <p class="tagline">Beggars Can't Be Chewsers</p>
+
+        {% if user.is_authenticated %}
+        <div id="logout-wrapper">
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn">Logout</button>
+          </form>
+        </div>
+        {% endif %}
+
         <nav id="main-navbar">
           {% if user.is_authenticated %}
           <a href="{% url 'home' %}">Home</a>
@@ -50,14 +60,7 @@
               <a href="{% url 'tag_management' %}">Tag Management</a>
             </div>
           </div>
-          {% endif %}
-
-          <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="btn">Logout</button>
-          </form>
-
-          {% else %}
+          {% endif %} {% else %}
           <a href="{% url 'all_recipes' %}">All Recipes</a>
           <a href="{% url 'login' %}">Login</a>
           {% endif %}

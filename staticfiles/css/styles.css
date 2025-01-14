@@ -801,30 +801,6 @@ form button {
   font-weight: bold;
 }
 
-header nav form .btn {
-  margin-top: 0;
-  margin-right: 10px;
-  padding: 8px 12px;
-  display: inline-block;
-  background-color: #f4a261;
-  color: white;
-  text-decoration: none;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-}
-
-header nav form {
-  display: inline-block;
-  margin: 0;
-}
-
-header nav form .btn:hover {
-  background-color: #e08a3c;
-}
-
 #main-navbar {
   display: flex;
   align-items: center;
@@ -847,23 +823,29 @@ header nav form .btn:hover {
   color: white;
 }
 
-#main-navbar form {
-  display: inline-block;
+#logout-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 100;
+}
+
+#logout-wrapper form {
   margin: 0;
 }
 
-#main-navbar form .btn {
+#logout-wrapper .btn {
   background-color: transparent;
   color: white;
-  border: none;
-  padding: 0;
   font-size: 1rem;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   text-decoration: none;
+  border: none;
   cursor: pointer;
-  font-family: "Poppins", sans-serif;
+  padding: 0;
 }
 
-#main-navbar form .btn:hover {
+#logout-wrapper .btn:hover {
   color: #f7a76c;
 }
