@@ -66,7 +66,33 @@ header .tagline {
 
 /* Navigation Links */
 header nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 15px;
+}
+
+header nav form {
+  margin: 0;
+  display: inline-block;
+}
+
+header nav form .btn {
+  display: inline-block;
+  padding: 8px 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: #f4a261;
+  border-radius: 4px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color o.3s ease;
+}
+
+header nav form .btn:hover {
+  background-color: #e08a3c;
 }
 
 header nav a {
