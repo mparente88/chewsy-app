@@ -90,6 +90,15 @@ header nav a.active {
   color: white;
 }
 
+header nav form {
+  display: inline-block;
+  margin: 0;
+}
+
+header nav form .btn {
+  display: inline-block;
+}
+
 /* Recipe Grid Styling */
 .recipe-grid {
   display: grid;
