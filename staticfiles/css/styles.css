@@ -66,7 +66,33 @@ header .tagline {
 
 /* Navigation Links */
 header nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 15px;
+}
+
+header nav form {
+  margin: 0;
+  display: inline-block;
+}
+
+header nav form .btn {
+  display: inline-block;
+  padding: 8px 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: #f4a261;
+  border-radius: 4px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color o.3s ease;
+}
+
+header nav form .btn:hover {
+  background-color: #e08a3c;
 }
 
 header nav a {
@@ -88,6 +114,11 @@ header nav a:hover {
 header nav a.active {
   background-color: #f2844d;
   color: white;
+}
+
+header nav form {
+  display: inline-block;
+  margin: 0;
 }
 
 /* Recipe Grid Styling */
@@ -768,4 +799,73 @@ form button {
 
 .shopping-list-table th {
   font-weight: bold;
+}
+
+header nav form .btn {
+  margin-top: 0;
+  margin-right: 10px;
+  padding: 8px 12px;
+  display: inline-block;
+  background-color: #f4a261;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+}
+
+header nav form {
+  display: inline-block;
+  margin: 0;
+}
+
+header nav form .btn:hover {
+  background-color: #e08a3c;
+}
+
+#main-navbar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#main-navbar a {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#main-navbar a:hover {
+  background-color: #f7a76c;
+  color: white;
+}
+
+#main-navbar form {
+  display: inline-block;
+  margin: 0;
+}
+
+#main-navbar form .btn {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: white;
+  background-color: #f4a261;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#main-navbar form .btn:hover {
+  background-color: #e08a3c;
 }
