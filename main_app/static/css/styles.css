@@ -97,6 +97,21 @@ header nav form {
 
 header nav form .btn {
   display: inline-block;
+  padding: 8px 15px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: #f4a261;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header nav form .btn:hover {
+  background-color: #e08a3c;
 }
 
 /* Recipe Grid Styling */
